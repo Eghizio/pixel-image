@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixel example</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        gap: 4rem;
+      }
+
+      :root {
+        --border: none;
+      }
+
+      .border {
+        --border: 5px solid red;
+      }
+
+      * {
+        border: var(--border);
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <input type="checkbox" name="border-toggle" id="border-toggle" />
+      <script>
+        document.querySelector("input").addEventListener("change", (event) => {
+          document.body.classList.toggle("border");
+        });
+      </script>
+    </div>
+
+    <main class="column">
+      <h1>Hello there</h1>
+
+      <img src="/assets/plant_big.png" alt="Just a plant" width="300px" />
+
+      <img class="hidden" src="/p.png" alt="Raw Pixel" />
+      <img class="hidden" src="/p.png?id=hidden" alt="Hidden Pixel" />
+      <img src="/p.png?id=visible" alt="Pixel" />
+      <img src="/p.png?id=none" alt="Pixel none" style="display: none" />
+
+      <img
+        src="/p.png?id=true-pixel"
+        alt=""
+        width="1"
+        height="1"
+        style="display: none"
+      />
+
+      <img src="/p.png?id=email-friendly" alt="" width="1" height="1" />
+
+      <p>Have a nice day.</p>
+    </main>
+  </body>
+</html>
