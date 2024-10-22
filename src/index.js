@@ -3,7 +3,8 @@ import { join } from "node:path";
 import express from "express";
 import morgan from "morgan";
 
-const PORT = 4000;
+const environment = process.env.NODE_ENV || "development";
+const PORT = process.env.PORT || 4000;
 const PIXEL_PATH = "./src/pixel.png";
 
 const app = express();
@@ -12,6 +13,10 @@ const tracking = new Map();
 app.disable("x-powered-by");
 app.use(morgan("dev"));
 app.use(express.static(join("src", "public")));
+
+if (environment === "development") app.set("json spaces", 2);
+
+app.get("/_/health", (_, res) => res.json({ health: "ok", environment }));
 
 app.get("/_/tracking", (_, res) => {
   return res.json({ entries: Object.fromEntries(tracking.entries()) });
