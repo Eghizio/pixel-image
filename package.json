@@ -3,11 +3,23 @@
   "scripts": {
     "start": "node src/index.js",
     "start:prod": "dotenvx run -f .env.production -- node src/index.js",
-    "start:dev": "dotenvx run -f .env.development -- node src/index.js"
+    "start:dev": "dotenvx run -f .env.development -- node src/index.js",
+    "docker:phpmyadmin": "docker run --name=phpmyadmin-pixel -d -p 8080:80 -e PMA_ARBITRARY=1 phpmyadmin",
+    "docker:mysql": "docker run --name=mysql-pixel -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=mysql mysql",
+    "docker:prometheus": "docker run --name=prometheus-pixel -d -p 9090:9090 -v `pwd`/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:v2.20.1",
+    "docker:grafana": "docker run --name=grafana-pixel -d -p 3001:3000 grafana/grafana-enterprise",
+    "docker:dbeaver": "docker run --name=dbeaver-pixel -d -p 8978:8978 dbeaver/cloudbeaver",
+    "docker:redis": "docker run --name=redis-pixel -d -p 6379:6379 redis",
+    "docker:redisinsight": "docker run --name=redisinsight-pixel -d -p 5540:5540 redis/redisinsight",
+    "docker:pgadmin": "docker run --name=pgadmin-pixel -d -p 5050:80 -e PGADMIN_DEFAULT_EMAIL=postgres@postgres.com -e PGADMIN_DEFAULT_PASSWORD=postgres dpage/pgadmin4",
+    "docker:postgresql": "docker run --name=postgresql-pixel -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres",
+    "docker:timescaledb": "docker run --name=timescaledb-pixel -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres timescale/timescaledb:latest-pg17"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.20.0",
     "express": "^4.21.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.3",
+    "pg": "^8.13.1"
   }
 }

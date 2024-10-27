@@ -2,6 +2,9 @@ import fs from "node:fs";
 import { join } from "node:path";
 import express from "express";
 import morgan from "morgan";
+import { PixelController } from "./modules/pixels/PixelController.js";
+import { PixelService } from "./modules/pixels/PixelService.js";
+import { db } from "./db/db.js";
 
 const environment = process.env.NODE_ENV || "development";
 const PORT = process.env.PORT || 4000;
@@ -35,6 +38,7 @@ const track = (req, _, next) => {
   if (id) {
     const entries = tracking.get(id) ?? 0;
     tracking.set(id, entries + 1);
+    PixelService.visitPixel(id);
   }
 
   next();
@@ -75,9 +79,13 @@ app.get("/p.png", track, noCache, async (_, res) => {
   // Move track here. To serve pixel faster. And tracking can be incremented later on.
 });
 
-app.listen(PORT, () =>
-  console.log(`Server running at http://localhost:${PORT}`)
-);
+app.use("/pixels", PixelController);
+
+db.initialiseDatabase().then(() => {
+  app.listen(PORT, () =>
+    console.log(`Server running at http://localhost:${PORT}`)
+  );
+});
 
 /*
     http://localhost:4000/p.png?id=0xabcdef
