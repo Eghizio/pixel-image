@@ -2,8 +2,7 @@ import { randomUUID } from "node:crypto";
 import { Router } from "express";
 import { PixelService } from "./PixelService.js";
 
-/* `/pixels` */
-export const PixelController = Router();
+export const PixelController = Router(); // `/pixels`
 
 const rnd = () => Math.ceil(Math.random() * 100);
 
