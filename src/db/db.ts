@@ -1,4 +1,5 @@
-import mysql from "mysql2/promise";
+// @ts-ignore
+import * as mysql from "mysql2/promise";
 
 export const pool = mysql.createPool({
   host: "localhost",
@@ -7,19 +8,26 @@ export const pool = mysql.createPool({
   database: "pixels",
 });
 
-const Query = (name, text, values = []) => ({
-  name,
-  text,
-  values,
-  withValues(values) {
+export class Query {
+  readonly name: string;
+  readonly text: string;
+  values: any[];
+
+  constructor(name: string, text: string, values: any[] = []) {
+    this.name = name;
+    this.text = text;
+    this.values = values;
+  }
+
+  withValues(values: any[]) {
     this.values = values;
     return this;
-  },
-});
+  }
+}
 
 const initialisation_query = {
   create_table: {
-    pixels: Query(
+    pixels: new Query(
       "create_table_pixels",
       `CREATE TABLE IF NOT EXISTS pixels (
         id          CHAR(36) PRIMARY KEY NOT NULL,                  -- UUIDs as CHAR(36) in MySQL
@@ -32,7 +40,7 @@ const initialisation_query = {
         scope       TEXT NULL
       );`
     ),
-    pixels_entries: Query(
+    pixels_entries: new Query(
       "create_table_pixels_entries",
       `CREATE TABLE IF NOT EXISTS pixels_entries (
         pixel_id    CHAR(36) NOT NULL,                              -- UUIDs as CHAR(36)
@@ -42,12 +50,9 @@ const initialisation_query = {
   },
 };
 
-const initDb = async (queries) => {
-  const results = await Promise.all(
-    queries.map((query) => pool.execute(query))
-  );
+const initDb = async (queries: string[]) => {
+  await Promise.all(queries.map((query) => pool.execute(query)));
   console.log("Database ready.");
-  pool.releaseConnection();
 };
 
 const initialiseDatabase = () =>
@@ -58,36 +63,36 @@ const initialiseDatabase = () =>
 
 export const query = {
   select: {
-    pixel_by_id: Query(
+    pixel_by_id: new Query(
       "select_pixel_by_id",
       `SELECT * FROM pixels WHERE id = ?;`
     ),
-    pixel_by_user_id: Query(
+    pixel_by_user_id: new Query(
       "select_pixel_by_user_id",
       `SELECT * FROM pixels WHERE user_id = ?;`
     ),
-    pixel_by_user_id_and_type: Query(
+    pixel_by_user_id_and_type: new Query(
       "select_pixel_by_user_id_and_type",
       `SELECT * FROM pixels WHERE user_id = ? AND type = ?;`
     ),
-    pixel_entries_by_id: Query(
+    pixel_entries_by_id: new Query(
       "select_pixel_entries_by_id",
       `SELECT * FROM pixels_entries WHERE pixel_id = ?;`
     ),
   },
   insert: {
-    pixel: Query(
+    pixel: new Query(
       "insert_pixel",
       `INSERT INTO pixels (id, type, user_id, name, created_at, visits, expires_at, scope) 
        VALUES (?, ?, ?, ?, DEFAULT, DEFAULT, ?, ?);`
     ),
-    pixel_entry: Query(
+    pixel_entry: new Query(
       "insert_pixel_entry",
       `INSERT INTO pixels_entries (pixel_id, visited_at) VALUES (?, DEFAULT);`
     ),
   },
   upsert: {
-    pixel: Query(
+    pixel: new Query(
       "upsert_pixel",
       `INSERT INTO pixels (id, type, user_id, name, created_at, visits, expires_at, scope) 
        VALUES (?, ?, ?, ?, DEFAULT, DEFAULT, ?, ?)
@@ -102,30 +107,44 @@ export const query = {
     ),
   },
   update: {
-    pixel_visits: Query(
+    pixel_visits: new Query(
       "update_pixel_visits",
       `UPDATE pixels SET visits = visits + 1 WHERE id = ?;`
     ),
   },
   delete: {
-    pixel_by_id: Query(
+    pixel_by_id: new Query(
       "delete_pixel_by_id",
       `DELETE FROM pixels WHERE id = ?;`
     ),
-    pixel_entries_by_id: Query(
+    pixel_entries_by_id: new Query(
       "delete_pixel_entries_by_id",
       `DELETE FROM pixels_entries WHERE pixel_id = ?;`
     ),
   },
 };
 
-const queryRows = async (q) => {
+const queryRows = async (q: Query) => {
   const [result] = await pool.execute(q.text, q.values);
   return result;
 };
 
-class DatabaseClient {
-  constructor(pool, query, initialiseDatabase, queryRows) {
+type Queries = typeof query;
+type QueryFn = typeof queryRows;
+
+export class DatabaseClient {
+  // Todo: Could be database agnostic.
+  readonly pool: mysql.Pool;
+  readonly query: Queries;
+  readonly initialiseDatabase: () => Promise<void>;
+  readonly queryRows: QueryFn;
+
+  constructor(
+    pool: mysql.Pool,
+    query: Queries,
+    initialiseDatabase: () => Promise<void>,
+    queryRows: QueryFn
+  ) {
     this.pool = pool;
     this.query = query;
     this.initialiseDatabase = initialiseDatabase;

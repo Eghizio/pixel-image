@@ -1,9 +1,10 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "start:prod": "dotenvx run -f .env.production -- node src/index.js",
-    "start:dev": "dotenvx run -f .env.development -- node src/index.js",
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "start:prod": "npm run build && dotenvx run -f .env.production -- node dist/index.js",
+    "start:dev": "npm run build && dotenvx run -f .env.development -- node dist/index.js",
     "docker:phpmyadmin": "docker run --name=phpmyadmin-pixel -d -p 8080:80 -e PMA_ARBITRARY=1 phpmyadmin",
     "docker:dbeaver": "docker run --name=dbeaver-pixel -d -p 8978:8978 dbeaver/cloudbeaver",
     "docker:mysql": "docker run --name=mysql-pixel -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=mysql mysql",
@@ -17,5 +18,12 @@
     "express": "^4.21.1",
     "morgan": "^1.10.0",
     "mysql2": "^3.11.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

@@ -7,15 +7,17 @@ import { db } from "../../db/db.js";
 export const PixelController = Router(); // `/pixels`
 
 const repository = new PixelRepository(db);
-const service = new PixelService(repository);
+export const service = new PixelService(repository); // temp export
 
+// Todo: Convert to class.
 PixelController.post("/", async (req, res) => {
   const dto = new PixelDto(req.body);
   // Get userId from request headers or smthing auth.
 
   const id = await service.createPixel(dto);
 
-  return res.status(201).json({ id });
+  res.status(201).json({ id });
+  return;
 });
 
 PixelController.delete("/:id", async (req, res) => {
@@ -24,7 +26,8 @@ PixelController.delete("/:id", async (req, res) => {
   // Validate user auth to perform action.
   await service.deletePixel(id);
 
-  return res.sendStatus(204);
+  res.sendStatus(204);
+  return;
 });
 
 PixelController.get("/id/:id", async (req, res) => {
@@ -32,7 +35,8 @@ PixelController.get("/id/:id", async (req, res) => {
 
   const pixel = await service.getPixelById(id);
 
-  return res.json(pixel);
+  res.json(pixel);
+  return;
 });
 
 PixelController.get("/id/:id/entries", async (req, res) => {
@@ -40,14 +44,21 @@ PixelController.get("/id/:id/entries", async (req, res) => {
 
   const entries = await service.getPixelEntriesByPixelId(id);
 
-  return res.json(entries);
+  res.json(entries);
+  return;
 });
 
 // TODO: Remove - temporary for testing.
 PixelController.get("/visit", async (req, res) => {
   const id = req.query["id"];
 
-  await service.visitPixel(id);
+  if (!id) {
+    res.sendStatus(404);
+    return;
+  }
 
-  return res.sendStatus(200);
+  await service.visitPixel(id.toString());
+
+  res.sendStatus(200);
+  return;
 });
