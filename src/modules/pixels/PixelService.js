@@ -1,47 +1,43 @@
 import { randomUUID } from "node:crypto";
-import { PixelRepository } from "./PixelRepository.js";
 
-export const PixelService = {
+export class PixelService {
+  constructor(pixelRepository) {
+    this.repository = pixelRepository;
+  }
+
   async createPixel(pixelDto) {
-    const { type, user_id, name, expires_at = null, scope = null } = pixelDto;
+    const { type, userId, name, expiresAt, scope } = pixelDto;
 
-    const id = await this.generatePixelId(user_id, name);
+    const id = this.#generatePixelId();
 
-    await PixelRepository.insertPixel(
-      id,
-      type,
-      user_id,
-      name,
-      expires_at,
-      scope
-    );
+    await this.repository.insertPixel(id, type, userId, name, expiresAt, scope);
 
     return id;
-  },
+  }
 
   async getPixelById(pixelId) {
-    const pixel = await PixelRepository.getPixelById(pixelId);
+    const pixel = await this.repository.getPixelById(pixelId);
     return pixel;
-  },
+  }
 
   async getPixelEntriesByPixelId(pixelId) {
-    const entries = await PixelRepository.getPixelEntriesByPixelId(pixelId);
+    const entries = await this.repository.getPixelEntriesByPixelId(pixelId);
     return entries;
-  },
+  }
 
   async visitPixel(pixelId) {
-    PixelRepository.insertPixelEntry(pixelId);
-    PixelRepository.updatePixelVisits(pixelId);
-  },
+    this.repository.insertPixelEntry(pixelId);
+    this.repository.updatePixelVisits(pixelId);
+  }
 
   async deletePixel(pixelId) {
-    const row = await PixelRepository.deletePixel(pixelId);
-    const result = await PixelRepository.deletePixelEntries(pixelId);
+    const row = await this.repository.deletePixel(pixelId);
+    const result = await this.repository.deletePixelEntries(pixelId);
     console.log({ row, result });
     return row;
-  },
+  }
 
-  async generatePixelId(userId, name) {
+  #generatePixelId() {
     return randomUUID();
-  },
-};
+  }
+}

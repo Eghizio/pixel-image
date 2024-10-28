@@ -120,15 +120,24 @@ export const query = {
 };
 
 const queryRows = async (q) => {
-  const [rows] = await pool.execute(q.text, q.values);
-  return rows;
+  const [result] = await pool.execute(q.text, q.values);
+  return result;
 };
 
-const mysqlClient = {
+class DatabaseClient {
+  constructor(pool, query, initialiseDatabase, queryRows) {
+    this.pool = pool;
+    this.query = query;
+    this.initialiseDatabase = initialiseDatabase;
+    this.queryRows = queryRows;
+  }
+}
+
+const MySqlClient = new DatabaseClient(
   pool,
   query,
   initialiseDatabase,
-  queryRows,
-};
+  queryRows
+);
 
-export const db = mysqlClient;
+export const db = MySqlClient;

@@ -14,8 +14,9 @@ const app = express();
 const tracking = new Map();
 
 app.disable("x-powered-by");
-app.use(morgan("dev"));
+app.use(express.json());
 app.use(express.static(join("src", "public")));
+app.use(morgan("dev"));
 
 if (environment === "development") app.set("json spaces", 2);
 
@@ -86,9 +87,3 @@ db.initialiseDatabase().then(() => {
     console.log(`Server running at http://localhost:${PORT}`)
   );
 });
-
-/*
-    http://localhost:4000/p.png?id=0xabcdef
-    Inspired by:
-    <img src="https://komarev.com/ghpvc/?username=Eghizio&label=Profile%20views&color=0e75b6&style=plastic" alt="Eghizio" />
-*/
