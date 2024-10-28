@@ -1,8 +1,4 @@
 import type { DatabaseClient } from "../../db/database.js";
-import { PixelRepository } from "./PixelRepository.js";
-import { PixelService } from "./PixelService.js";
-import { PixelController } from "./PixelController.js";
-import { PixelRouter } from "./PixelRouter.js";
 
 export class PixelModule {
   readonly repository: PixelRepository;
