@@ -12,7 +12,7 @@ export class PixelService {
   async createPixel(pixelDto: PixelDto) {
     const { type, userId, name, expiresAt, scope } = pixelDto;
 
-    const id = this.#generatePixelId();
+    const id = this.generatePixelId();
 
     await this.repository.insertPixel(id, type, userId, name, expiresAt, scope);
 
@@ -41,7 +41,7 @@ export class PixelService {
     return row;
   }
 
-  #generatePixelId() {
+  private generatePixelId() {
     return randomUUID();
   }
 }

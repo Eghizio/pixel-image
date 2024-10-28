@@ -4,9 +4,9 @@ import express, { RequestHandler } from "express";
 import morgan from "morgan";
 import { PixelController, service } from "./modules/pixels/PixelController.js";
 import { db } from "./db/db.js";
+import { config } from "./Config.js";
 
-const environment = process.env.NODE_ENV || "development";
-const PORT = process.env.PORT || 4000;
+const { environment, port } = config;
 const PIXEL_PATH = "./src/pixel.png";
 
 const app = express();
@@ -82,7 +82,7 @@ app.get("/p.png", track, noCache, async (_, res) => {
 app.use("/pixels", PixelController);
 
 db.initialiseDatabase().then(() => {
-  app.listen(PORT, () =>
-    console.log(`Server running at http://localhost:${PORT}`)
+  app.listen(port, () =>
+    console.log(`Server running at http://localhost:${port}`)
   );
 });

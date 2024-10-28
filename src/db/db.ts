@@ -1,11 +1,7 @@
 import mysql from "mysql2/promise";
+import { config } from "../Config.js";
 
-export const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "mysql",
-  database: "pixels",
-});
+export const pool = mysql.createPool(config.database);
 
 export class Query {
   readonly name: string;
