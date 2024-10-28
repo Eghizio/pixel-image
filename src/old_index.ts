@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import { join } from "node:path";
-import express, { RequestHandler } from "express";
+import express, { type RequestHandler } from "express";
 import morgan from "morgan";
 import { config } from "./Config.js";
-import { databaseClient } from "./db/database.js";
 import { modules } from "./modules/index.js";
+import { databaseClient } from "./db/database.js";
 
 const { environment, port } = config;
 const PIXEL_PATH = "./src/pixel.png";
@@ -80,8 +80,6 @@ app.get("/p.png", track, noCache, async (_, res) => {
 
   // Move track here. To serve pixel faster. And tracking can be incremented later on.
 });
-
-app.use("/api/pixels", modules.pixel.router.get());
 
 databaseClient.initialiseDatabase().then(() => {
   app.listen(port, () =>
