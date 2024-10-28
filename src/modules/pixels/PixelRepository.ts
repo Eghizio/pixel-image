@@ -1,12 +1,8 @@
-import { DatabaseClient } from "../../db/db.js";
-import { PixelType } from "./models/Pixel.model.js";
+import type { DatabaseClient } from "../../db/database.js";
+import type { PixelType } from "./models/Pixel.model.js";
 
 export class PixelRepository {
-  readonly db: DatabaseClient;
-
-  constructor(databaseClient: DatabaseClient) {
-    this.db = databaseClient;
-  }
+  constructor(private db: DatabaseClient) {}
 
   async getPixelById(id: string) {
     const q = this.db.query.select.pixel_by_id.withValues([id]);

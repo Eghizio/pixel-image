@@ -2,9 +2,9 @@ import fs from "node:fs";
 import { join } from "node:path";
 import express, { RequestHandler } from "express";
 import morgan from "morgan";
-import { PixelController, service } from "./modules/pixels/PixelController.js";
-import { db } from "./db/db.js";
 import { config } from "./Config.js";
+import { databaseClient } from "./db/database.js";
+import { modules } from "./modules/index.js";
 
 const { environment, port } = config;
 const PIXEL_PATH = "./src/pixel.png";
@@ -38,7 +38,8 @@ const track: RequestHandler = (req, _, next) => {
   if (id) {
     const entries = tracking.get(id) ?? 0;
     tracking.set(id, entries + 1);
-    service.visitPixel(id.toString());
+
+    modules.pixel.service.visitPixel(id.toString());
   }
 
   next();
@@ -57,19 +58,9 @@ const noCache: RequestHandler = (_, res, next) => {
   next();
 };
 
-// app.get("/p.png", track, noCache, async (_, res) => {
-//   /* Stream */
-//   res.setHeader("Content-Type", "image/png");
-
-//   const stream = fs.createReadStream(PIXEL_PATH);
-//   stream.on("open", () => stream.pipe(res));
-//   stream.on("error", () => res.writeHead(404).end());
-// });
-
 const pixelBuffer = fs.readFileSync(PIXEL_PATH);
 const pixelBufferLength = pixelBuffer.length;
 app.get("/p.png", track, noCache, async (_, res) => {
-  /* In Memory */
   res
     .writeHead(200, {
       "Content-Type": "image/png",
@@ -79,9 +70,9 @@ app.get("/p.png", track, noCache, async (_, res) => {
   // Move track here. To serve pixel faster. And tracking can be incremented later on.
 });
 
-app.use("/pixels", PixelController);
+app.use("/api/pixels", modules.pixel.router.get());
 
-db.initialiseDatabase().then(() => {
+databaseClient.initialiseDatabase().then(() => {
   app.listen(port, () =>
     console.log(`Server running at http://localhost:${port}`)
   );

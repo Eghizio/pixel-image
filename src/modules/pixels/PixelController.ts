@@ -1,64 +1,65 @@
-import { Router } from "express";
-import { PixelService } from "./PixelService.js";
+import { type Request, type Response } from "express";
+import type { PixelService } from "./PixelService.js";
 import { PixelDto } from "./models/Pixel.dto.js";
-import { PixelRepository } from "./PixelRepository.js";
-import { db } from "../../db/db.js";
 
-export const PixelController = Router(); // `/pixels`
+export class PixelController {
+  constructor(private service: PixelService) {}
 
-const repository = new PixelRepository(db);
-export const service = new PixelService(repository); // temp export
+  // POST /api/pixels
+  async createPixel(req: Request, res: Response) {
+    const dto = new PixelDto(req.body);
+    // Get userId from request headers or smthing auth.
 
-// Todo: Convert to class.
-PixelController.post("/", async (req, res) => {
-  const dto = new PixelDto(req.body);
-  // Get userId from request headers or smthing auth.
+    const id = await this.service.createPixel(dto);
 
-  const id = await service.createPixel(dto);
-
-  res.status(201).json({ id });
-  return;
-});
-
-PixelController.delete("/:id", async (req, res) => {
-  const id = req.params["id"];
-
-  // Validate user auth to perform action.
-  await service.deletePixel(id);
-
-  res.sendStatus(204);
-  return;
-});
-
-PixelController.get("/id/:id", async (req, res) => {
-  const id = req.params["id"];
-
-  const pixel = await service.getPixelById(id);
-
-  res.json(pixel);
-  return;
-});
-
-PixelController.get("/id/:id/entries", async (req, res) => {
-  const id = req.params["id"];
-
-  const entries = await service.getPixelEntriesByPixelId(id);
-
-  res.json(entries);
-  return;
-});
-
-// TODO: Remove - temporary for testing.
-PixelController.get("/visit", async (req, res) => {
-  const id = req.query["id"];
-
-  if (!id) {
-    res.sendStatus(404);
+    res.status(201).json({ id });
     return;
   }
 
-  await service.visitPixel(id.toString());
+  // DELETE /api/pixels/:id
+  async deletePixel(req: Request, res: Response) {
+    const id = req.params["id"];
 
-  res.sendStatus(200);
-  return;
-});
+    // Validate user auth to perform action.
+    await this.service.deletePixel(id);
+
+    res.sendStatus(204);
+    return;
+  }
+
+  // GET /api/pixels/id/:id
+  async getPixel(req: Request, res: Response) {
+    const id = req.params["id"];
+
+    const pixel = await this.service.getPixelById(id);
+
+    res.json(pixel);
+    return;
+  }
+
+  // GET /api/pixels/id/:id/entries
+  async getPixelEntries(req: Request, res: Response) {
+    const id = req.params["id"];
+
+    const entries = await this.service.getPixelEntriesByPixelId(id);
+
+    res.json(entries);
+    return;
+  }
+
+  // TODO: Remove - temporary for testing.
+  // GET /api/pixels/visit?id=pixelId
+  async visitPixel(req: Request, res: Response) {
+    const id = req.query["id"];
+
+    if (!id) {
+      res.sendStatus(404);
+      return;
+    }
+
+    await this.service.visitPixel(id.toString());
+
+    res.sendStatus(200);
+    return;
+  }
+}

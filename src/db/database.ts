@@ -154,4 +154,4 @@ const MySqlClient = new DatabaseClient(
   queryRows
 );
 
-export const db = MySqlClient;
+export const databaseClient = MySqlClient;

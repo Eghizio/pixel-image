@@ -1,13 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { PixelRepository } from "./PixelRepository.js";
+import type { PixelRepository } from "./PixelRepository.js";
 import { PixelDto } from "./models/Pixel.dto.js";
 
 export class PixelService {
-  readonly repository: PixelRepository;
-
-  constructor(pixelRepository: PixelRepository) {
-    this.repository = pixelRepository;
-  }
+  constructor(private repository: PixelRepository) {}
 
   async createPixel(pixelDto: PixelDto) {
     const { type, userId, name, expiresAt, scope } = pixelDto;
