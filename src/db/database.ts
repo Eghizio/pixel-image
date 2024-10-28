@@ -20,6 +20,7 @@ export class Query {
   }
 }
 
+// TODO: pixels_tombstones - upon deletion, summary of a lifetime pixel (id, name, visits, created_at, expired_at/removed_at)
 const initialisation_query = {
   create_table: {
     pixels: new Query(
