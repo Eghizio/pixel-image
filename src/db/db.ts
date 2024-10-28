@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as mysql from "mysql2/promise";
+import mysql from "mysql2/promise";
 
 export const pool = mysql.createPool({
   host: "localhost",
