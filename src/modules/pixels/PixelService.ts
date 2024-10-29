@@ -1,6 +1,6 @@
-import { randomUUID } from "node:crypto";
 import type { PixelRepository } from "./PixelRepository.js";
-import { PixelDto } from "./models/Pixel.dto.js";
+import { PixelDto } from "./models/Pixel/Pixel.dto.js";
+import { IdGenerator } from "../../lib/IdGenerator.js";
 
 export class PixelService {
   constructor(private repository: PixelRepository) {}
@@ -8,7 +8,7 @@ export class PixelService {
   async createPixel(pixelDto: PixelDto) {
     const { type, userId, name, expiresAt, scope } = pixelDto;
 
-    const id = this.generatePixelId();
+    const id = IdGenerator.generate();
 
     await this.repository.insertPixel(id, type, userId, name, expiresAt, scope);
 
@@ -35,9 +35,5 @@ export class PixelService {
     const result = await this.repository.deletePixelEntries(pixelId);
     console.log({ row, result });
     return row;
-  }
-
-  private generatePixelId() {
-    return randomUUID();
   }
 }

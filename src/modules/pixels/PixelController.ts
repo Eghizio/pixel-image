@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
 import type { PixelService } from "./PixelService.js";
-import { PixelDto } from "./models/Pixel.dto.js";
+import { PixelDto } from "./models/Pixel/Pixel.dto.js";
 
 export class PixelController {
   constructor(private service: PixelService) {}

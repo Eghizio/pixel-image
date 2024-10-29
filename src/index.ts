@@ -2,6 +2,7 @@ import fs from "node:fs";
 import { join } from "node:path";
 import express, { RequestHandler } from "express";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import { config } from "./Config.js";
 import { databaseClient } from "./db/database.js";
 import { modules } from "./modules/index.js";
@@ -12,10 +13,11 @@ const PIXEL_PATH = "./src/pixel.png";
 const app = express();
 const tracking = new Map();
 
-app.disable("x-powered-by");
 app.use(express.json());
-app.use(express.static(join("src", "public")));
 app.use(morgan("dev"));
+app.use(cookieParser("secret-lmao")); // Todo: Secret Env.
+app.use(express.static(join("src", "public")));
+app.disable("x-powered-by");
 
 if (environment === "development") app.set("json spaces", 2);
 
@@ -76,7 +78,7 @@ app.get("/p.png", track, noCache, async (_, res) => {
       "Content-Type": "image/svg+xml",
       "Content-Length": svgPixelLength,
     })
-    .end(svgPixel);
+    .end(svgPixel); // Todo: Check what is better.
 
   // Move track here. To serve pixel faster. And tracking can be incremented later on.
 });

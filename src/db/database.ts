@@ -1,4 +1,4 @@
-import mysql from "mysql2/promise";
+import mysql, { type RowDataPacket } from "mysql2/promise";
 import { config } from "../Config.js";
 
 export const pool = mysql.createPool(config.database);
@@ -21,26 +21,42 @@ export class Query {
 }
 
 // TODO: pixels_tombstones - upon deletion, summary of a lifetime pixel (id, name, visits, created_at, expired_at/removed_at)
+// TODO: table for temporary users waiting for email verification.
 const initialisation_query = {
   create_table: {
     pixels: new Query(
       "create_table_pixels",
       `CREATE TABLE IF NOT EXISTS pixels (
-        id          CHAR(36) PRIMARY KEY NOT NULL,                  -- UUIDs as CHAR(36) in MySQL
-        type        ENUM('GLOBAL', 'SCOPED') NOT NULL,              -- ENUM instead of CHECK constraint
-        user_id     CHAR(36) NOT NULL,                              -- UUIDs as CHAR(36) in MySQL
+        id          CHAR(36) PRIMARY KEY NOT NULL,
+        type        ENUM('GLOBAL', 'SCOPED') NOT NULL,
+        user_id     CHAR(36) NOT NULL,
         name        TEXT NOT NULL,
-        created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,   -- TIMESTAMP with default
+        created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         visits      INT DEFAULT 0 NOT NULL,
-        expires_at  TIMESTAMP NULL,                                 -- Optional TIMESTAMP
-        scope       TEXT NULL
+        expires_at  TIMESTAMP NULL,
+        scope       TEXT NULL,
+        UNIQUE (id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
       );`
     ),
     pixels_entries: new Query(
       "create_table_pixels_entries",
       `CREATE TABLE IF NOT EXISTS pixels_entries (
-        pixel_id    CHAR(36) NOT NULL,                              -- UUIDs as CHAR(36)
-        visited_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL    -- Default TIMESTAMP value
+        pixel_id    CHAR(36) NOT NULL,
+        visited_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        FOREIGN KEY (pixel_id) REFERENCES pixels(id)
+      );`
+    ),
+    users: new Query(
+      "create_table_users",
+      `CREATE TABLE IF NOT EXISTS users (
+        id            CHAR(36) PRIMARY KEY NOT NULL,
+        email         VARCHAR(255) NOT NULL,
+        password      VARCHAR(255) NOT NULL,
+        name          TEXT NOT NULL,
+        created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        last_seen_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        CONSTRAINT UC_User UNIQUE (id, email)
       );`
     ),
   },
@@ -53,6 +69,7 @@ const initDb = async (queries: string[]) => {
 
 const initialiseDatabase = () =>
   initDb([
+    initialisation_query.create_table.users.text,
     initialisation_query.create_table.pixels.text,
     initialisation_query.create_table.pixels_entries.text,
   ]);
@@ -75,6 +92,14 @@ export const query = {
       "select_pixel_entries_by_id",
       `SELECT * FROM pixels_entries WHERE pixel_id = ?;`
     ),
+    user_by_email: new Query(
+      "select_user_by_email",
+      `SELECT * FROM users WHERE email = ? LIMIT 1;`
+    ),
+    user_by_id: new Query(
+      "select_user_by_id",
+      `SELECT * FROM users WHERE id = ? LIMIT 1;`
+    ),
   },
   insert: {
     pixel: new Query(
@@ -85,6 +110,11 @@ export const query = {
     pixel_entry: new Query(
       "insert_pixel_entry",
       `INSERT INTO pixels_entries (pixel_id, visited_at) VALUES (?, DEFAULT);`
+    ),
+    user: new Query(
+      "insert_user",
+      `INSERT INTO users (id, email, password, name, created_at, last_seen_at) 
+       VALUES (?, ?, ?, ?, DEFAULT, DEFAULT);`
     ),
   },
   upsert: {
@@ -106,6 +136,14 @@ export const query = {
     pixel_visits: new Query(
       "update_pixel_visits",
       `UPDATE pixels SET visits = visits + 1 WHERE id = ?;`
+    ),
+    user_name: new Query(
+      "update_user_name",
+      `UPDATE users SET name = ? WHERE id = ?;`
+    ),
+    user_email: new Query(
+      "update_user_email",
+      `UPDATE users SET email = ? WHERE id = ?;`
     ),
   },
   delete: {

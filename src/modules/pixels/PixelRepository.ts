@@ -1,6 +1,7 @@
 import type { DatabaseClient } from "../../db/database.js";
-import type { PixelType } from "./models/Pixel.model.js";
+import type { PixelType } from "./models/Pixel/Pixel.model.js";
 
+// Todo: Return Pixel Entities.
 export class PixelRepository {
   constructor(private db: DatabaseClient) {}
 
