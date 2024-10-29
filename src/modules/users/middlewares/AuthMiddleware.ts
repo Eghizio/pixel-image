@@ -1,8 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { JWT } from "../../../lib/JWT.js";
 
-const JWT_TOKEN_NAME = "JWT_TOKEN"; // To Config/Env.
-
 // Todo: Probably UserController, UserRouter & Middlewares should be moved to /src/api/users, same applies for pixels.
 
 // This middleware should be shared. So it won't belong to Users Module.
@@ -13,7 +11,7 @@ export class AuthMiddleware {
     res: Response,
     next: NextFunction
   ) {
-    const token: string = req.signedCookies[JWT_TOKEN_NAME];
+    const token: string = req.signedCookies[JWT.TOKEN_NAME];
 
     if (!token) {
       console.log("No token");

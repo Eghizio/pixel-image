@@ -1,10 +1,11 @@
 import jwt, { type SignOptions } from "jsonwebtoken";
-
-const secret = "secret_lmao"; // Todo: Config. Maybe use private/public key.
+import { config } from "../Config.js";
 
 export class JWT {
+  static readonly TOKEN_NAME = "_pxt";
+
   static async sign(data: {}): Promise<string> {
-    // Todo: Config.
+    // Todo: Config?.
     const MIN_15 = 15;
     const iat = Math.floor(Date.now() / 1000);
     // const exp = iat + MIN_15;
@@ -14,7 +15,7 @@ export class JWT {
     const options: SignOptions = { expiresIn: MIN_15 };
 
     return new Promise((resolve, reject) => {
-      jwt.sign(payload, secret, options, (error, token) =>
+      jwt.sign(payload, config.secrets.jwt, options, (error, token) =>
         error
           ? reject(error)
           : token
@@ -26,7 +27,7 @@ export class JWT {
 
   static async verify(token: string): Promise<boolean> {
     return new Promise((resolve) => {
-      jwt.verify(token, secret, (error) =>
+      jwt.verify(token, config.secrets.jwt, (error) =>
         error ? resolve(false) : resolve(true)
       );
     });

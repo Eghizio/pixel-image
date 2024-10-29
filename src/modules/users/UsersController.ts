@@ -6,8 +6,6 @@ import { InvalidCredentials } from "./errors/InvalidCredentials.js";
 import { config } from "../../Config.js";
 import { JWT } from "../../lib/JWT.js";
 
-const JWT_COOKIE_NAME = "JWT_TOKEN"; // Config/Env.
-
 export class UsersController {
   constructor(private service: UsersService) {}
 
@@ -40,7 +38,7 @@ export class UsersController {
       // Set cookie.
       const MIN_15 = 15 * 60 * 1_000; // Milliseconds.
 
-      res.cookie(JWT_COOKIE_NAME, token, {
+      res.cookie(JWT.TOKEN_NAME, token, {
         // Todo: Figure out and to Config/Envs.
         httpOnly: true,
         sameSite: "strict",
@@ -68,7 +66,7 @@ export class UsersController {
     // Todo: Auth - Verify is user has token.
 
     // Remove cookie.
-    res.clearCookie(JWT_COOKIE_NAME);
+    res.clearCookie(JWT.TOKEN_NAME);
     res.sendStatus(204);
     return;
   }
@@ -127,10 +125,8 @@ export class UsersController {
 
   private async getUserIdFromToken(req: Request) {
     // Todo: Get from Auth in a clean way.
-    const token = req.signedCookies[JWT_COOKIE_NAME];
+    const token = req.signedCookies[JWT.TOKEN_NAME];
     const decoded = JWT.decode(token);
-
-    console.log({ decoded });
     // @ts-ignore // Todo: Adjust.
     const userId = decoded.data.id as string;
 

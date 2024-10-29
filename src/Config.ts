@@ -11,6 +11,11 @@ export class Config {
     readonly database: string;
   };
 
+  readonly secrets: {
+    readonly cookies: string;
+    readonly jwt: string;
+  };
+
   constructor() {
     this.environment = this.toEnvironment(
       process.env["NODE_ENV"] || "development"
@@ -22,6 +27,11 @@ export class Config {
       user: process.env["DATABASE_USER"] || "root",
       password: process.env["DATABASE_PASSWORD"] || "mysql",
       database: process.env["DATABASE_NAME"] || "pixels",
+    };
+
+    this.secrets = {
+      cookies: process.env["COOKIES_SECRET"] || "cookies_secret",
+      jwt: process.env["JWT_SECRET"] || "jwt_secret",
     };
 
     this.logSafeConfig();

@@ -15,7 +15,7 @@ const tracking = new Map();
 
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cookieParser("secret-lmao")); // Todo: Secret Env.
+app.use(cookieParser(config.secrets.cookies));
 app.use(express.static(join("src", "public")));
 app.disable("x-powered-by");
 
