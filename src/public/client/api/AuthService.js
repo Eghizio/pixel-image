@@ -5,11 +5,8 @@ export class AuthService {
 
   constructor() {
     this.#client = new RestClient(
-      "http://localhost:4000/api/users",
-      {
-        "Content-Type": "application/json",
-      },
-      // { credentials: "include", mode: "cors" }
+      "/api/users",
+      { "Content-Type": "application/json" },
       { credentials: "include" }
     );
   }
