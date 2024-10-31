@@ -43,9 +43,8 @@ const initialisation_query = {
       "create_table_pixels_entries",
       `CREATE TABLE IF NOT EXISTS pixels_entries (
         pixel_id    CHAR(36) NOT NULL,
-        visited_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        FOREIGN KEY (pixel_id) REFERENCES pixels(id)
-      );`
+        visited_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+      );` // FOREIGN KEY (pixel_id) REFERENCES pixels(id)
     ),
     users: new Query(
       "create_table_users",

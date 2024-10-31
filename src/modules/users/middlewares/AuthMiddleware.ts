@@ -13,6 +13,10 @@ export class AuthMiddleware {
   ) {
     const token: string = req.signedCookies[JWT.TOKEN_NAME];
 
+    // Expiration is quite short. That's why errors.
+    // console.log(req.cookies);
+    // console.log(req.signedCookies);
+
     if (!token) {
       console.log("No token");
       res.sendStatus(401);

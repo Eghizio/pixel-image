@@ -1,0 +1,18 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+form {
+  padding: 1rem;
+  background-color: antiquewhite;
+}
+
+input {
+  min-width: 200px;
+}
+
+.top-bar {
+  background-color: cornsilk;
+}

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -fr dist && tsc",
     "start": "npm run build && node dist/index.js",
     "start:prod": "npm run build && dotenvx run -f .env.production -- node dist/index.js",
     "start:dev": "npm run build && dotenvx run -f .env.development -- node dist/index.js",

@@ -8,14 +8,6 @@ export class UsersRouter {
   constructor(private controller: UsersController) {
     const router = Router();
 
-    // Having a decorator in Controller for Endpoint would be nice.
-    router.post("/", this.controller.registerUser.bind(controller));
-    router.delete(
-      "/:id",
-      AuthMiddleware.requireLoggedInUser,
-      this.controller.deleteUser.bind(controller)
-    );
-
     router.post("/session", this.controller.loginUser.bind(controller));
     router.delete(
       "/session",
@@ -37,6 +29,14 @@ export class UsersRouter {
       "/email",
       AuthMiddleware.requireLoggedInUser,
       this.controller.updateUsersEmail.bind(controller)
+    );
+
+    // Having a decorator in Controller for Endpoint would be nice.
+    router.post("/", this.controller.registerUser.bind(controller));
+    router.delete(
+      "/:id",
+      AuthMiddleware.requireLoggedInUser,
+      this.controller.deleteUser.bind(controller)
     );
 
     this.router = router;

@@ -6,12 +6,11 @@ export class JWT {
 
   static async sign(data: {}): Promise<string> {
     // Todo: Config?.
-    const MIN_15 = 15;
     const iat = Math.floor(Date.now() / 1000);
-    // const exp = iat + MIN_15;
 
     const payload = { iat, data };
 
+    const MIN_15 = 15 * 60; // seconds
     const options: SignOptions = { expiresIn: MIN_15 };
 
     return new Promise((resolve, reject) => {
