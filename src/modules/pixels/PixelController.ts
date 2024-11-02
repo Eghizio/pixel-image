@@ -1,14 +1,17 @@
 import { type Request, type Response } from "express";
 import type { PixelService } from "./PixelService.js";
 import { PixelDto } from "./models/Pixel/Pixel.dto.js";
+import { JWT } from "../../lib/JWT.js";
 
 export class PixelController {
   constructor(private service: PixelService) {}
 
   // POST /api/pixels
   async createPixel(req: Request, res: Response) {
-    const dto = new PixelDto(req.body);
     // Get userId from request headers or smthing auth.
+    const userId = await this.getUserIdFromToken(req);
+
+    const dto = new PixelDto({ ...req.body, userId });
 
     const id = await this.service.createPixel(dto);
 
@@ -18,12 +21,25 @@ export class PixelController {
 
   // DELETE /api/pixels/:id
   async deletePixel(req: Request, res: Response) {
+    const userId = await this.getUserIdFromToken(req);
+    // Adjust so the only pixels allowed to delete are owned by this user.
+
     const id = req.params["id"];
 
     // Validate user auth to perform action.
     await this.service.deletePixel(id);
 
     res.sendStatus(204);
+    return;
+  }
+
+  // GET /api/pixels/id/:id
+  async getAllPixels(req: Request, res: Response) {
+    const userId = await this.getUserIdFromToken(req);
+
+    const pixel = await this.service.getAllPixelsForUser(userId);
+
+    res.json(pixel);
     return;
   }
 
@@ -61,5 +77,15 @@ export class PixelController {
 
     res.sendStatus(200);
     return;
+  }
+
+  private async getUserIdFromToken(req: Request) {
+    // Todo: Get from Auth in a clean way.
+    const token = req.signedCookies[JWT.TOKEN_NAME];
+    const decoded = JWT.decode(token);
+    // @ts-ignore // Todo: Adjust.
+    const userId = decoded.data.id as string;
+
+    return userId;
   }
 }

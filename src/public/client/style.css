@@ -4,9 +4,17 @@
   gap: 4rem;
 }
 
+#Users {
+  --bg-color: antiquewhite;
+}
+
+#Pixels {
+  --bg-color: pink;
+}
+
 form {
   padding: 1rem;
-  background-color: antiquewhite;
+  background-color: var(--bg-color);
 }
 
 input {

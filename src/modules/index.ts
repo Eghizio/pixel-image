@@ -1,4 +1,4 @@
-import { databaseClient } from "../db/database.js";
+import { databaseClient } from "../infrastructure/database/clients/index.js";
 import { PixelModule } from "./pixels/index.js";
 import { UsersModule } from "./users/index.js";
 

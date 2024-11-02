@@ -15,7 +15,7 @@ export class UsersController {
     try {
       const id = await this.service.registerUser(dto.email, dto.password);
       res.status(201).json({ id });
-      return;
+      return; // TODO: Set cookie.
     } catch (error) {
       // Todo: Move it to UsersRouter ErrorHandler ?
       if (error instanceof UserAlreadyExists) {

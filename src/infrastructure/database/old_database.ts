@@ -1,8 +1,9 @@
-import mysql, { type RowDataPacket } from "mysql2/promise";
-import { config } from "../Config.js";
+import mysql, { type QueryResult } from "mysql2/promise";
+import { config } from "../../Config.js";
 
 export const pool = mysql.createPool(config.database);
 
+// /infrastructure/database/database.ts
 export class Query {
   readonly name: string;
   readonly text: string;
@@ -17,6 +18,31 @@ export class Query {
   withValues(values: any[]) {
     this.values = values;
     return this;
+  }
+}
+
+type Queries = typeof query;
+type QueryFn = typeof queryRows;
+
+// Todo: Will be removed.
+// export class DatabaseClient {
+class DatabaseClient {
+  // Todo: Could be database agnostic.
+  readonly pool: mysql.Pool;
+  readonly query: Queries;
+  readonly initialiseDatabase: () => Promise<void>;
+  readonly queryRows: QueryFn;
+
+  constructor(
+    pool: mysql.Pool,
+    query: Queries,
+    initialiseDatabase: () => Promise<void>,
+    queryRows: QueryFn
+  ) {
+    this.pool = pool;
+    this.query = query;
+    this.initialiseDatabase = initialiseDatabase;
+    this.queryRows = queryRows;
   }
 }
 
@@ -162,29 +188,6 @@ const queryRows = async (q: Query) => {
   return result;
 };
 
-type Queries = typeof query;
-type QueryFn = typeof queryRows;
-
-export class DatabaseClient {
-  // Todo: Could be database agnostic.
-  readonly pool: mysql.Pool;
-  readonly query: Queries;
-  readonly initialiseDatabase: () => Promise<void>;
-  readonly queryRows: QueryFn;
-
-  constructor(
-    pool: mysql.Pool,
-    query: Queries,
-    initialiseDatabase: () => Promise<void>,
-    queryRows: QueryFn
-  ) {
-    this.pool = pool;
-    this.query = query;
-    this.initialiseDatabase = initialiseDatabase;
-    this.queryRows = queryRows;
-  }
-}
-
 const MySqlClient = new DatabaseClient(
   pool,
   query,
@@ -192,4 +195,4 @@ const MySqlClient = new DatabaseClient(
   queryRows
 );
 
-export const databaseClient = MySqlClient;
+export const old_databaseClient = MySqlClient;

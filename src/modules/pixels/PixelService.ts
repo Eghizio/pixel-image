@@ -15,6 +15,11 @@ export class PixelService {
     return id;
   }
 
+  async getAllPixelsForUser(userId: string) {
+    const pixel = await this.repository.getPixelByUserId(userId);
+    return pixel;
+  }
+
   async getPixelById(pixelId: string) {
     const pixel = await this.repository.getPixelById(pixelId);
     return pixel;
@@ -33,7 +38,7 @@ export class PixelService {
   async deletePixel(pixelId: string) {
     const row = await this.repository.deletePixel(pixelId);
     const result = await this.repository.deletePixelEntries(pixelId);
-    console.log({ row, result });
-    return row;
+    // console.log({ row, result });
+    return row; // needed?
   }
 }

@@ -4,8 +4,8 @@ import express, { RequestHandler } from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { config } from "./Config.js";
-import { databaseClient } from "./db/database.js";
 import { modules } from "./modules/index.js";
+import { databaseClient } from "./infrastructure/database/clients/index.js";
 
 const { environment, port } = config;
 const PIXEL_PATH = "./src/pixel.png";
@@ -86,7 +86,13 @@ app.get("/p.png", track, noCache, async (_, res) => {
 app.use("/api/users", modules.users.router.get());
 app.use("/api/pixels", modules.pixel.router.get());
 
-databaseClient.initialiseDatabase().then(() => {
+// databaseClient.initialiseDatabase().then(() => {
+//   app.listen(port, () =>
+//     console.log(`Server running at http://localhost:${port}`)
+//   );
+// });
+
+databaseClient.initialiser.initialise().then(() => {
   app.listen(port, () =>
     console.log(`Server running at http://localhost:${port}`)
   );

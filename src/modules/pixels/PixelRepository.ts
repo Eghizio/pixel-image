@@ -1,25 +1,37 @@
-import type { DatabaseClient } from "../../db/database.js";
+import type { ApplicationDatabaseClient } from "../../infrastructure/database/clients/index.js";
 import type { PixelType } from "./models/Pixel/Pixel.model.js";
+import {
+  DELETE_PIXEL_BY_ID,
+  DELETE_PIXEL_ENTRIES_BY_ID,
+  INSERT_PIXEL,
+  INSERT_PIXEL_ENTRY,
+  SELECT_PIXEL_BY_ID,
+  SELECT_PIXEL_BY_USER_ID,
+  SELECT_PIXEL_BY_USER_ID_AND_TYPE,
+  SELECT_PIXEL_ENTRIES_BY_ID,
+  UPDATE_PIXEL_VISITS,
+  UPSERT_PIXEL,
+} from "../../infrastructure/database/queries/pixels.js";
 
 // Todo: Return Pixel Entities.
 export class PixelRepository {
-  constructor(private db: DatabaseClient) {}
+  constructor(private db: ApplicationDatabaseClient) {}
 
   async getPixelById(id: string) {
-    const q = this.db.query.select.pixel_by_id.withValues([id]);
-    return this.db.queryRows(q);
+    const q = SELECT_PIXEL_BY_ID.withValues([id]);
+    return this.db.executeQuery(q);
   }
   async getPixelByUserId(user_id: string) {
-    const q = this.db.query.select.pixel_by_user_id.withValues([user_id]);
-    return this.db.queryRows(q);
+    const q = SELECT_PIXEL_BY_USER_ID.withValues([user_id]);
+    return this.db.executeQuery(q);
   }
   async getPixelByUserIdOfType(user_id: string, type: PixelType) {
-    const q = this.db.query.select.pixel_by_user_id.withValues([user_id, type]);
-    return this.db.queryRows(q);
+    const q = SELECT_PIXEL_BY_USER_ID_AND_TYPE.withValues([user_id, type]);
+    return this.db.executeQuery(q);
   }
   async getPixelEntriesByPixelId(pixel_id: string) {
-    const q = this.db.query.select.pixel_entries_by_id.withValues([pixel_id]);
-    return this.db.queryRows(q);
+    const q = SELECT_PIXEL_ENTRIES_BY_ID.withValues([pixel_id]);
+    return this.db.executeQuery(q);
   }
 
   async insertPixel(
@@ -31,14 +43,14 @@ export class PixelRepository {
     scope: string | null
   ) {
     const values = [id, type, user_id, name, expires_at, scope];
-    const q = this.db.query.insert.pixel.withValues(values);
-    return this.db.queryRows(q);
+    const q = INSERT_PIXEL.withValues(values);
+    return this.db.executeQuery(q);
   }
 
   // Separate repository?
   async insertPixelEntry(pixel_id: string) {
-    const q = this.db.query.insert.pixel_entry.withValues([pixel_id]);
-    return this.db.queryRows(q);
+    const q = INSERT_PIXEL_ENTRY.withValues([pixel_id]);
+    return this.db.executeQuery(q);
   }
 
   async upsertPixel(
@@ -50,23 +62,23 @@ export class PixelRepository {
     scope: string | null
   ) {
     const values = [id, type, user_id, name, expires_at, scope];
-    const q = this.db.query.upsert.pixel.withValues(values);
-    return this.db.queryRows(q);
+    const q = UPSERT_PIXEL.withValues(values);
+    return this.db.executeQuery(q);
   }
 
   async updatePixelVisits(id: string) {
-    const q = this.db.query.update.pixel_visits.withValues([id]);
-    return this.db.queryRows(q);
+    const q = UPDATE_PIXEL_VISITS.withValues([id]);
+    return this.db.executeQuery(q);
   }
 
   async deletePixel(id: string) {
-    const q = this.db.query.delete.pixel_by_id.withValues([id]);
-    return this.db.queryRows(q);
+    const q = DELETE_PIXEL_BY_ID.withValues([id]);
+    return this.db.executeQuery(q);
   }
 
   // Separate repository?
   async deletePixelEntries(pixel_id: string) {
-    const q = this.db.query.delete.pixel_entries_by_id.withValues([pixel_id]);
-    return this.db.queryRows(q);
+    const q = DELETE_PIXEL_ENTRIES_BY_ID.withValues([pixel_id]);
+    return this.db.executeQuery(q);
   }
 }

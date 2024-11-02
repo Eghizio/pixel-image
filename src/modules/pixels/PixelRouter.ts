@@ -9,6 +9,7 @@ export class PixelRouter {
 
     router.post("/", this.controller.createPixel.bind(controller));
     router.delete("/:id", this.controller.deletePixel.bind(controller));
+    router.get("/", this.controller.getAllPixels.bind(controller));
     router.get("/id/:id", this.controller.getPixel.bind(controller));
     router.get(
       "/id/:id/entries",

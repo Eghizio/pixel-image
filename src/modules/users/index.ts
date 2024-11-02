@@ -1,4 +1,4 @@
-import type { DatabaseClient } from "../../db/database.js";
+import type { ApplicationDatabaseClient } from "src/infrastructure/database/clients/index.js";
 import { UsersController } from "./UsersController.js";
 import { UsersRepository } from "./UsersRepository.js";
 import { UsersRouter } from "./UsersRouter.js";
@@ -10,7 +10,7 @@ export class UsersModule {
   readonly controller: UsersController;
   readonly router: UsersRouter;
 
-  constructor(databaseClient: DatabaseClient) {
+  constructor(databaseClient: ApplicationDatabaseClient) {
     const repository = new UsersRepository(databaseClient);
     const service = new UsersService(repository);
     const controller = new UsersController(service);

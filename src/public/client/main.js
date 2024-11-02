@@ -1,4 +1,5 @@
 import { AuthService } from "./api/AuthService.js";
+import { PixelService } from "./api/PixelService.js";
 
 const safely = (value) => {
   if (!value) throw new Error("No value.");
@@ -9,17 +10,21 @@ const form = (formName) =>
   safely(document.querySelector(`form#${formName}-form`));
 
 const auth = new AuthService();
+const pixel = new PixelService();
 
 console.log("user@user.com");
 
 const handlers = [
-  auth.register,
-  auth.login,
-  auth.logout,
-  auth.getCurrentUser,
-  auth.changeUsersName,
-  auth.changeUsersEmail,
-].map((h) => h.bind(auth));
+  auth.register.bind(auth),
+  auth.login.bind(auth),
+  auth.logout.bind(auth),
+  auth.getCurrentUser.bind(auth),
+  auth.changeUsersName.bind(auth),
+  auth.changeUsersEmail.bind(auth),
+  pixel.createPixel.bind(pixel),
+  pixel.getAllPixels.bind(pixel),
+  pixel.deletePixel.bind(pixel),
+];
 
 const Forms = Object.fromEntries(
   [
@@ -29,6 +34,9 @@ const Forms = Object.fromEntries(
     "current-user",
     "change-name",
     "change-email",
+    "pixel-create",
+    "pixel-all",
+    "pixel-delete",
   ].map((name, i) => [name, { form: form(name), handler: handlers[i] }])
 );
 

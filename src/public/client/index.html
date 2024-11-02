@@ -15,87 +15,130 @@
         <pre id="current-user"></pre>
       </article>
 
-      <form id="register-form" autocomplete="off">
-        <label for="email-register">
-          Email:
-          <input
-            type="email"
-            name="email"
-            id="email-register"
-            placeholder="johndoe@email.com"
-            required
-          />
-        </label>
-        <label for="password-register">
-          Password:
-          <input
-            type="password"
-            name="password"
-            id="password-register"
-            placeholder="secret_password"
-            required
-          />
-        </label>
-        <button type="submit">Register</button>
-      </form>
+      <section class="layout" id="Users">
+        <form id="register-form" autocomplete="off">
+          <label for="email-register">
+            Email:
+            <input
+              type="email"
+              name="email"
+              id="email-register"
+              placeholder="johndoe@email.com"
+              required
+            />
+          </label>
+          <label for="password-register">
+            Password:
+            <input
+              type="password"
+              name="password"
+              id="password-register"
+              placeholder="secret_password"
+              required
+            />
+          </label>
+          <button type="submit">Register</button>
+        </form>
 
-      <form id="login-form" autocomplete="off">
-        <label for="email-login">
-          Email:
-          <input
-            type="email"
-            name="email"
-            id="email-login"
-            placeholder="johndoe@email.com"
-            required
-          />
-        </label>
-        <label for="password-login">
-          Password:
-          <input
-            type="password"
-            name="password"
-            id="password-login"
-            placeholder="secret_password"
-            required
-          />
-        </label>
-        <button type="submit">Login</button>
-      </form>
+        <form id="login-form" autocomplete="off">
+          <label for="email-login">
+            Email:
+            <input
+              type="email"
+              name="email"
+              id="email-login"
+              placeholder="johndoe@email.com"
+              required
+            />
+          </label>
+          <label for="password-login">
+            Password:
+            <input
+              type="password"
+              name="password"
+              id="password-login"
+              placeholder="secret_password"
+              required
+            />
+          </label>
+          <button type="submit">Login</button>
+        </form>
 
-      <form id="logout-form" autocomplete="off">
-        <button type="submit">Logout</button>
-      </form>
+        <form id="logout-form" autocomplete="off">
+          <button type="submit">Logout</button>
+        </form>
 
-      <form id="current-user-form" autocomplete="off">
-        <button type="submit">Get current User</button>
-      </form>
+        <form id="current-user-form" autocomplete="off">
+          <button type="submit">Get current User</button>
+        </form>
 
-      <form id="change-name-form" autocomplete="off">
-        <label for="name">
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Name"
-            required
-          />
-        </label>
-        <button type="submit">Change name</button>
-      </form>
+        <form id="change-name-form" autocomplete="off">
+          <label for="name">
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Name"
+              required
+            />
+          </label>
+          <button type="submit">Change name</button>
+        </form>
 
-      <form id="change-email-form" autocomplete="off">
-        <label for="email">
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="notjohndoe@email.com"
-            required
-          />
-        </label>
-        <button type="submit">Change email</button>
-      </form>
+        <form id="change-email-form" autocomplete="off">
+          <label for="email">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="notjohndoe@email.com"
+              required
+            />
+          </label>
+          <button type="submit">Change email</button>
+        </form>
+      </section>
+
+      <section class="layout" id="Pixels">
+        <form id="pixel-create-form" autocomplete="off">
+          <label for="pixel-name">
+            Name:
+            <input
+              type="text"
+              name="name"
+              id="pixel-name"
+              placeholder="GitHub Profile"
+              required
+            />
+          </label>
+          <label for="pixel-type">
+            Type:
+            <input
+              type="text"
+              name="type"
+              id="pixel-type"
+              placeholder="GLOBAL"
+              pattern="GLOBAL|SCOPED"
+              required
+            />
+          </label>
+
+          <button type="submit">Create</button>
+        </form>
+
+        <form id="pixel-all-form" autocomplete="off">
+          <button type="submit">Get all Pixels</button>
+        </form>
+
+        <form id="pixel-delete-form" autocomplete="off">
+          <label for="pixel-id">
+            Pixel ID:
+            <input type="text" name="id" id="pixel-id" required />
+          </label>
+
+          <button type="submit">Delete</button>
+        </form>
+      </section>
     </main>
   </body>
 </html>

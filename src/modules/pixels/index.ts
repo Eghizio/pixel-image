@@ -1,4 +1,4 @@
-import type { DatabaseClient } from "../../db/database.js";
+import type { ApplicationDatabaseClient } from "src/infrastructure/database/clients/index.js";
 import { PixelRepository } from "./PixelRepository.js";
 import { PixelService } from "./PixelService.js";
 import { PixelController } from "./PixelController.js";
@@ -10,7 +10,7 @@ export class PixelModule {
   readonly controller: PixelController;
   readonly router: PixelRouter;
 
-  constructor(databaseClient: DatabaseClient) {
+  constructor(databaseClient: ApplicationDatabaseClient) {
     const repository = new PixelRepository(databaseClient);
     const service = new PixelService(repository);
     const controller = new PixelController(service);
