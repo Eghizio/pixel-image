@@ -3,11 +3,11 @@ import type { PixelDto } from "../models/Pixel/Pixel.dto.js";
 export interface PixelService {
   createPixel(pixelDto: PixelDto): Promise<string>;
 
-  getAllPixelsForUser(userId: string): Promise<void>;
+  getAllPixelsForUser(userId: string): Promise<any[]>;
 
-  getPixelById(pixelId: string): Promise<void>;
+  getPixelById(pixelId: string): Promise<any>;
 
-  getPixelEntriesByPixelId(pixelId: string): Promise<void>;
+  getPixelEntriesByPixelId(pixelId: string): Promise<any[]>;
 
   visitPixel(pixelId: string): Promise<void>;
 
