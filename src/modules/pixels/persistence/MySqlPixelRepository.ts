@@ -22,14 +22,17 @@ export class MySqlPixelRepository implements PixelRepository {
     const q = SELECT_PIXEL_BY_ID.withValues([id]);
     return this.db.executeQuery(q);
   }
+
   async getPixelByUserId(user_id: string) {
     const q = SELECT_PIXEL_BY_USER_ID.withValues([user_id]);
     return this.db.executeQuery(q);
   }
+
   async getPixelByUserIdOfType(user_id: string, type: PixelType) {
     const q = SELECT_PIXEL_BY_USER_ID_AND_TYPE.withValues([user_id, type]);
     return this.db.executeQuery(q);
   }
+
   async getPixelEntriesByPixelId(pixel_id: string) {
     const q = SELECT_PIXEL_ENTRIES_BY_ID.withValues([pixel_id]);
     return this.db.executeQuery(q);
