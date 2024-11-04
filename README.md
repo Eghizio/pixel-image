@@ -12,6 +12,7 @@ Inspired by: [GitHub Profile Views Counter](https://github.com/antonkomarev/gith
 
 ### Todo
 
+- Absolute imports
 - Logger
 - Metrics & Dashboards (Prometheus & Grafana)
 - Logging (ELK stack)
