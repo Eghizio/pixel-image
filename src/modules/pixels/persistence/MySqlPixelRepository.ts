@@ -1,5 +1,6 @@
-import type { ApplicationDatabaseClient } from "../../infrastructure/database/clients/index.js";
-import type { PixelType } from "./models/Pixel/Pixel.model.js";
+import type { ApplicationDatabaseClient } from "../../../infrastructure/database/clients/index.js";
+import type { PixelRepository } from "../domain/PixelRepository.interface.js";
+import type { PixelType } from "../models/Pixel/Pixel.model.js";
 import {
   DELETE_PIXEL_BY_ID,
   DELETE_PIXEL_ENTRIES_BY_ID,
@@ -11,10 +12,10 @@ import {
   SELECT_PIXEL_ENTRIES_BY_ID,
   UPDATE_PIXEL_VISITS,
   UPSERT_PIXEL,
-} from "../../infrastructure/database/queries/pixels.js";
+} from "../../../infrastructure/database/queries/pixels.js";
 
 // Todo: Return Pixel Entities.
-export class PixelRepository {
+export class MySqlPixelRepository implements PixelRepository {
   constructor(private db: ApplicationDatabaseClient) {}
 
   async getPixelById(id: string) {

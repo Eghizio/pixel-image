@@ -1,8 +1,9 @@
-import type { PixelRepository } from "./PixelRepository.js";
-import { PixelDto } from "./models/Pixel/Pixel.dto.js";
-import { IdGenerator } from "../../lib/IdGenerator.js";
+import type { PixelRepository } from "./PixelRepository.interface.js";
+import { PixelDto } from "../models/Pixel/Pixel.dto.js";
+import { IdGenerator } from "../../../lib/IdGenerator.js";
+import { PixelService } from "./PixelService.interface.js";
 
-export class PixelService {
+export class DefaultPixelService implements PixelService {
   constructor(private repository: PixelRepository) {}
 
   async createPixel(pixelDto: PixelDto) {
