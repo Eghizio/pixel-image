@@ -7,7 +7,9 @@ import { UsersModule } from "./users/index.js";
 // /[module]/api - Extract Controllers, Routers & Middlewares.
 // /[module]/errors/[persistence/domain/api] - Organise Errors.
 
-export const modules = {
+export const Modules = {
   users: new UsersModule(databaseClient),
   pixel: new PixelModule(databaseClient),
 };
+
+export type ApplicationModules = typeof Modules;
