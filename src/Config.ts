@@ -1,4 +1,4 @@
-export type Environment = "production" | "development";
+export type Environment = "production" | "development" | "test";
 
 export class Config {
   readonly environment: Environment;
@@ -48,6 +48,9 @@ export class Config {
         return environment;
       }
       case "development": {
+        return environment;
+      }
+      case "test": {
         return environment;
       }
       default: {

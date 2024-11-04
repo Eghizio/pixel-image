@@ -9,3 +9,15 @@ Tracking & Analytics using pixel ✨
 For local development use `host.docker.internal` as database host.
 
 Inspired by: [GitHub Profile Views Counter](https://github.com/antonkomarev/github-profile-views-counter)
+
+### Todo
+
+- Metrics & Dashboards (Prometheus & Grafana)
+- Logging (ELK stack)
+- Alerting
+- Unit, Integration & E2E tests (Testcontainers & Cypress)
+- CI/CD pipelines (GitHub Actions)
+- Public API (Free usage limited)
+- Email reports & summaries
+- Push Notification triggers
+- Web Extension, Desktop & Mobile App
