@@ -1,8 +1,10 @@
 import type { ApplicationDatabaseClient } from "src/infrastructure/database/clients/index.js";
-import { UsersController } from "./UsersController.js";
-import { UsersRepository } from "./UsersRepository.js";
-import { UsersRouter } from "./UsersRouter.js";
-import { UsersService } from "./UsersService.js";
+import type { UsersRepository } from "./domain/UsersRepository.interface.js";
+import type { UsersService } from "./domain/UsersService.interface.js";
+import { MySqlUsersRepository } from "./persistence/MySqlUsersRepository.js";
+import { DefaultUsersService } from "./domain/DefaultUsersService.js";
+import { UsersController } from "./api/UsersController.js";
+import { UsersRouter } from "./api/UsersRouter.js";
 
 export class UsersModule {
   readonly repository: UsersRepository;
@@ -11,8 +13,8 @@ export class UsersModule {
   readonly router: UsersRouter;
 
   constructor(databaseClient: ApplicationDatabaseClient) {
-    const repository = new UsersRepository(databaseClient);
-    const service = new UsersService(repository);
+    const repository = new MySqlUsersRepository(databaseClient);
+    const service = new DefaultUsersService(repository);
     const controller = new UsersController(service);
     const router = new UsersRouter(controller);
 
