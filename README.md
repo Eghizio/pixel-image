@@ -12,10 +12,11 @@ Inspired by: [GitHub Profile Views Counter](https://github.com/antonkomarev/gith
 
 ### Todo
 
+- Logger
 - Metrics & Dashboards (Prometheus & Grafana)
 - Logging (ELK stack)
 - Alerting
-- Unit, Integration & E2E tests (Testcontainers & Cypress)
+- Unit, Integration & E2E tests (Testcontainers & Cypress or Playwright)
 - CI/CD pipelines (GitHub Actions)
 - Public API (Free usage limited)
 - Email reports & summaries
