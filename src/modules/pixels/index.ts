@@ -1,8 +1,10 @@
 import type { ApplicationDatabaseClient } from "src/infrastructure/database/clients/index.js";
-import { PixelRepository } from "./PixelRepository.js";
-import { PixelService } from "./PixelService.js";
-import { PixelController } from "./PixelController.js";
-import { PixelRouter } from "./PixelRouter.js";
+import type { PixelRepository } from "./domain/PixelRepository.interface.js";
+import type { PixelService } from "./domain/PixelService.interface.js";
+import { MySqlPixelRepository } from "./persistence/MySqlPixelRepository.js";
+import { DefaultPixelService } from "./domain/DefaultPixelService.js";
+import { PixelController } from "./api/PixelController.js";
+import { PixelRouter } from "./api/PixelRouter.js";
 
 export class PixelModule {
   readonly repository: PixelRepository;
@@ -11,8 +13,8 @@ export class PixelModule {
   readonly router: PixelRouter;
 
   constructor(databaseClient: ApplicationDatabaseClient) {
-    const repository = new PixelRepository(databaseClient);
-    const service = new PixelService(repository);
+    const repository = new MySqlPixelRepository(databaseClient);
+    const service = new DefaultPixelService(repository);
     const controller = new PixelController(service);
     const router = new PixelRouter(controller);
 

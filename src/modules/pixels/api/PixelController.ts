@@ -1,7 +1,7 @@
-import { type Request, type Response } from "express";
-import type { PixelService } from "./PixelService.js";
-import { PixelDto } from "./models/Pixel/Pixel.dto.js";
-import { JWT } from "../../lib/JWT.js";
+import type { Request, Response } from "express";
+import type { PixelService } from "../domain/PixelService.interface";
+import { PixelDto } from "../models/Pixel/Pixel.dto.js";
+import { JWT } from "../../../lib/JWT.js";
 
 export class PixelController {
   constructor(private service: PixelService) {}

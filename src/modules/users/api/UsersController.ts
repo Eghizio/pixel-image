@@ -1,10 +1,10 @@
-import { type Request, type Response } from "express";
-import type { UsersService } from "./UsersService.js";
-import { UserDto } from "./models/User/User.dto.js";
-import { UserAlreadyExists } from "./errors/UserAlreadyExists.js";
-import { InvalidCredentials } from "./errors/InvalidCredentials.js";
-import { config } from "../../Config.js";
-import { JWT } from "../../lib/JWT.js";
+import type { Request, Response } from "express";
+import type { UsersService } from "../domain/UsersService.interface.js";
+import { UserDto } from "../models/User/User.dto.js";
+import { UserAlreadyExists } from "../errors/UserAlreadyExists.js";
+import { InvalidCredentials } from "../errors/InvalidCredentials.js";
+import { config } from "../../../Config.js";
+import { JWT } from "../../../lib/JWT.js";
 
 export class UsersController {
   constructor(private service: UsersService) {}

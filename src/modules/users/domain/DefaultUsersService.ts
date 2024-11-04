@@ -1,12 +1,13 @@
-import type { UsersRepository } from "./UsersRepository.js";
-import { PasswordEncryption } from "../../lib/PasswordEncryption.js";
-import { IdGenerator } from "../../lib/IdGenerator.js";
-import { UserAlreadyExists } from "./errors/UserAlreadyExists.js";
-import { UserEntity } from "./models/User/User.entity.js";
-import { InvalidCredentials } from "./errors/InvalidCredentials.js";
-import { JWT } from "../../lib/JWT.js";
+import type { UsersService } from "./UsersService.interface.js";
+import type { UsersRepository } from "./UsersRepository.interface.js";
+import { PasswordEncryption } from "../../../lib/PasswordEncryption.js";
+import { IdGenerator } from "../../../lib/IdGenerator.js";
+import { UserAlreadyExists } from "../errors/UserAlreadyExists.js";
+import { UserEntity } from "../models/User/User.entity.js";
+import { InvalidCredentials } from "../errors/InvalidCredentials.js";
+import { JWT } from "../../../lib/JWT.js";
 
-export class UsersService {
+export class DefaultUsersService implements UsersService {
   constructor(private repository: UsersRepository) {}
 
   async registerUser(email: string, password: string): Promise<string> {
