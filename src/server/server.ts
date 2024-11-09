@@ -13,7 +13,7 @@ export const createServer = (
 ) => {
   const app = express();
 
-  app.use(morgan("dev"));
+  app.use(morgan(environment === "development" ? "dev" : "combined"));
   app.use(express.json());
   app.use(cookieParser(secrets.cookies));
   app.disable("x-powered-by");
