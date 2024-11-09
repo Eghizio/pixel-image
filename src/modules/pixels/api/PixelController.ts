@@ -11,7 +11,9 @@ export class PixelController {
     // Get userId from request headers or smthing auth.
     const userId = await this.getUserIdFromToken(req);
 
-    const dto = new PixelDto({ ...req.body, userId });
+    const type: PixelDto["type"] = "GLOBAL"; // As for now all pixels are GLOBAL. SCOPED :soontm:
+
+    const dto = new PixelDto({ ...req.body, type, userId });
 
     const id = await this.service.createPixel(dto);
 
@@ -26,8 +28,15 @@ export class PixelController {
 
     const id = req.params["id"];
 
+    const pixel = await this.service.getPixelById(id);
+
+    if (pixel.user_id !== userId) {
+      res.sendStatus(401);
+      return;
+    }
+
     // Validate user auth to perform action.
-    await this.service.deletePixel(id);
+    await this.service.deletePixel(pixel.id); // Should accept userId and handle further validation except middleware layer validation.
 
     res.sendStatus(204);
     return;

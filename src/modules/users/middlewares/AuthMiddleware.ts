@@ -1,8 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { JWT } from "../../../lib/JWT.js";
 
-// Todo: Probably UserController, UserRouter & Middlewares should be moved to /src/api/users, same applies for pixels.
-
 // This middleware should be shared. So it won't belong to Users Module.
 
 export class AuthMiddleware {
