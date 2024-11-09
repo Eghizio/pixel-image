@@ -33,6 +33,8 @@ export const CREATE_USERS_TABLE = new Query(
         name          TEXT NOT NULL,
         created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         last_seen_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        UNIQUE (id),
+        UNIQUE (email),
         CONSTRAINT UC_User UNIQUE (id, email)
     );`
 );

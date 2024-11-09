@@ -10,8 +10,8 @@ export class JWT {
 
     const payload = { iat, data };
 
-    const MIN_15 = 15 * 60; // seconds
-    const options: SignOptions = { expiresIn: MIN_15 };
+    const WEEK = 7 * 24 * 60 * 60; // seconds
+    const options: SignOptions = { expiresIn: WEEK };
 
     return new Promise((resolve, reject) => {
       jwt.sign(payload, config.secrets.jwt, options, (error, token) =>
