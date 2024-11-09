@@ -23,3 +23,4 @@ Inspired by: [GitHub Profile Views Counter](https://github.com/antonkomarev/gith
 - Email reports & summaries
 - Push Notification triggers
 - Web Extension, Desktop & Mobile App
+- Ignoring tracking for a user specific query ex: `?as=Eghizio`
