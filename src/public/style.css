@@ -40,6 +40,10 @@ input {
   color: red;
 }
 
+#how-to {
+  background-color: lightskyblue;
+}
+
 #how-to pre {
   padding: 0.5rem 1rem;
   background-color: dodgerblue;
