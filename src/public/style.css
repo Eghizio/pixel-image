@@ -39,3 +39,19 @@ input {
 .red {
   color: red;
 }
+
+#how-to pre {
+  padding: 0.5rem 1rem;
+  background-color: dodgerblue;
+  overflow: scroll;
+}
+
+#how-to #copy-btn {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  width: 120px;
+}
+
+#image-pixel-id {
+  width: 14rem;
+}

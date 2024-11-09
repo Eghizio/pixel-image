@@ -7,12 +7,66 @@
     <link rel="stylesheet" href="./style.css" />
     <script type="module" src="./main.js"></script>
   </head>
-  <body id="app">
+  <body id="app" class="layout">
     <header id="top-bar" class="top-bar">
       <h1>Pixel Client</h1>
       <pre>user@user.com</pre>
+      <span
+        >Work in progress. All data and registered users might be due to
+        deletion.</span
+      >
       <pre id="current-user"></pre>
     </header>
+
+    <section class="layout" id="how-to">
+      <h2>How to use</h2>
+
+      <ol>
+        <li>
+          Replace the ID with the <b>ID of your Pixel</b> -
+          <i>an unique tracker for page.</i> visits.
+        </li>
+        <li>
+          Embedd this link as an <b>Image</b> on your Website or GitHub README.
+        </li>
+      </ol>
+
+      <p>
+        Be aware that the pixel must be rendered. It can also take some more
+        space due to flex or grid spacings on the page - so be cautios with its
+        placement.
+      </p>
+
+      <div id="example-link">
+        <pre id="link"></pre>
+        <button id="copy-btn" type="button">Copy link</button>
+      </div>
+
+      <div id="example-tag">
+        <pre id="example"></pre>
+        <button id="copy-btn" type="button">Copy example</button>
+      </div>
+
+      <div id="example-generator">
+        <h4>Image generator</h4>
+        <label for="image-pixel-id">
+          Your pixel id:
+          <input
+            type="text"
+            name="image-pixel-id"
+            id="image-pixel-id"
+            pattern="[0-9a-f]{32}"
+            minlength="32"
+            maxlength="32"
+            placeholder="Insert your pixel id here"
+          />
+        </label>
+        <pre id="image"></pre>
+        <button id="copy-btn" type="button">
+          Copy image tag with your pixel
+        </button>
+      </div>
+    </section>
 
     <main class="layout row">
       <section class="layout" id="Users">
@@ -156,12 +210,12 @@
           <button class="red" type="submit">Delete</button>
         </form>
 
-        <article id="pixel-list-container">
-          <h3>Pixels list</h3>
+        <details id="pixel-list-container">
+          <summary>Pixels list</summary>
 
           <button id="refresh-list" type="button">Refresh</button>
           <ol id="pixel-list"></ol>
-        </article>
+        </details>
       </section>
     </main>
   </body>

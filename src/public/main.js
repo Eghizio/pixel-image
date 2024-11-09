@@ -47,8 +47,12 @@ const submitForm = (handler) => async (event) => {
     (e) => e instanceof HTMLInputElement
   );
 
-  const body = Object.fromEntries(inputs.map((i) => [i.name, i.value]));
-  const args = Object.values(body);
+  // const body = Object.fromEntries(inputs.map((i) => [i.name, i.value]));
+  // const args = Object.values(body);
+
+  const args = inputs.map((i) => i.value);
+
+  event.target.reset();
 
   const data = await handler(...args);
   console.log(data);
@@ -73,7 +77,7 @@ const createPixelListItem = ({ id, name, visits, created_at }) => {
 };
 
 const listAllPixels = async () => {
-  const pixels = await pixel.getAllPixels();
+  const pixels = (await pixel.getAllPixels()) ?? [];
   const listItems = pixels.map(createPixelListItem);
 
   document.querySelector("#pixel-list").replaceChildren(...listItems);
@@ -84,3 +88,50 @@ document
   .addEventListener("click", listAllPixels);
 
 listAllPixels();
+
+const copyTextToClipboard = async (text) => {
+  if (!navigator.clipboard) return;
+  return navigator.clipboard.writeText(text);
+};
+
+const createCopyExample = (sourceElement, textToCopy = null) => {
+  sourceElement.parentElement
+    .querySelector("button#copy-btn")
+    .addEventListener("click", () =>
+      copyTextToClipboard(textToCopy ?? sourceElement.textContent)
+    );
+};
+
+const createPixelLink = (pixelId = "EXAMPLE-PIXEL-ID-REPLACE-WITH-YOURS") =>
+  `${window.location.origin}/p.png?id=${pixelId}`;
+const createPixelTag = (pixelId) =>
+  `<img src="${createPixelLink(
+    pixelId
+  )}" alt="" width="1" height="1" style="display: none" />`;
+
+const examplePixelId = "EXAMPLE-PIXEL-ID-REPLACE-WITH-YOURS";
+const examplePixelUrl = createPixelLink(examplePixelId);
+const examplePixelTag = createPixelTag(examplePixelId);
+
+const linkExample = document.querySelector(
+  "section#how-to #example-link pre#link"
+);
+linkExample.textContent = examplePixelUrl;
+createCopyExample(linkExample);
+
+const tagExample = document.querySelector(
+  "section#how-to #example-tag pre#example"
+);
+tagExample.textContent = examplePixelTag;
+createCopyExample(tagExample);
+
+const exampleGenerator = document.querySelector("#example-generator");
+const generatedExampleSourceElement = exampleGenerator.querySelector("pre");
+exampleGenerator.querySelector("input").addEventListener("input", (event) => {
+  const pixelId = event.target.value;
+  if (pixelId.length !== 32) return;
+  generatedExampleSourceElement.textContent = createPixelTag(
+    pixelId || examplePixelId
+  );
+});
+createCopyExample(generatedExampleSourceElement);
