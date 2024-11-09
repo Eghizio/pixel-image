@@ -129,7 +129,7 @@ const exampleGenerator = document.querySelector("#example-generator");
 const generatedExampleSourceElement = exampleGenerator.querySelector("pre");
 exampleGenerator.querySelector("input").addEventListener("input", (event) => {
   const pixelId = event.target.value;
-  if (pixelId.length !== 32) return;
+  if (pixelId.length !== 36) return;
   generatedExampleSourceElement.textContent = createPixelTag(
     pixelId || examplePixelId
   );
