@@ -70,7 +70,7 @@
         <form id="logout-form" autocomplete="off">
           <h2>Logout</h2>
 
-          <button type="submit">Logout</button>
+          <button class="red" type="submit">Logout</button>
         </form>
 
         <form id="current-user-form" autocomplete="off">
@@ -106,7 +106,7 @@
               required
             />
           </label>
-          <button type="submit">Change email</button>
+          <button class="orange" type="submit">Change email</button>
         </form>
       </section>
 
@@ -153,8 +153,15 @@
             <input type="text" name="id" id="pixel-id" required />
           </label>
 
-          <button type="submit">Delete</button>
+          <button class="red" type="submit">Delete</button>
         </form>
+
+        <article id="pixel-list-container">
+          <h3>Pixels list</h3>
+
+          <button id="refresh-list" type="button">Refresh</button>
+          <ol id="pixel-list"></ol>
+        </article>
       </section>
     </main>
   </body>

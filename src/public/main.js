@@ -59,3 +59,28 @@ for (const name in Forms) {
 
   form.addEventListener("submit", submitForm(handler));
 }
+
+const createPixelListItem = ({ id, name, visits, created_at }) => {
+  const li = document.createElement("li");
+  li.id = id;
+
+  const pre = document.createElement("pre");
+  pre.textContent = JSON.stringify({ name, visits, id, created_at }, null, 2);
+
+  li.append(pre);
+
+  return li;
+};
+
+const listAllPixels = async () => {
+  const pixels = await pixel.getAllPixels();
+  const listItems = pixels.map(createPixelListItem);
+
+  document.querySelector("#pixel-list").replaceChildren(...listItems);
+};
+
+document
+  .querySelector("button#refresh-list")
+  .addEventListener("click", listAllPixels);
+
+listAllPixels();
