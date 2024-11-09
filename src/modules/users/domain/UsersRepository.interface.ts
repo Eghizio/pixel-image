@@ -14,4 +14,6 @@ export interface UsersRepository {
   updateUserNameById(name: string, id: string): Promise<any>;
 
   updateUserEmailById(email: string, id: string): Promise<any>;
+
+  updateUserLastSeenAt(id: string): Promise<any>;
 }

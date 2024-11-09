@@ -33,6 +33,8 @@ export class DefaultUsersService implements UsersService {
 
     if (!isCorrectPassword) throw new InvalidCredentials(); // Handle
 
+    this.repository.updateUserLastSeenAt(user.id);
+
     const tokenData = { id: user.id };
 
     // Should the Service sign the JWT? Or should the Controller? Just return userId?

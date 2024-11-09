@@ -6,6 +6,7 @@ import {
   SELECT_USER_BY_ID,
   UPDATE_USER_NAME,
   UPDATE_USER_EMAIL,
+  UPDATE_USER_LAST_SEEN_AT,
 } from "../../../infrastructure/database/queries/users.js";
 
 // Todo: Return Entities.
@@ -34,6 +35,11 @@ export class MySqlUsersRepository implements UsersRepository {
 
   async updateUserEmailById(email: string, id: string) {
     const q = UPDATE_USER_EMAIL.withValues([email, id]);
+    return this.db.executeQuery(q);
+  }
+
+  updateUserLastSeenAt(id: string): Promise<any> {
+    const q = UPDATE_USER_LAST_SEEN_AT.withValues([id]);
     return this.db.executeQuery(q);
   }
 }

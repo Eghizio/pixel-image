@@ -25,3 +25,8 @@ export const UPDATE_USER_EMAIL = new Query(
   "update_user_email",
   `UPDATE users SET email = ? WHERE id = ?;`
 );
+
+export const UPDATE_USER_LAST_SEEN_AT = new Query(
+  "update_user_last_seen_at",
+  `UPDATE users SET last_seen_at = CURRENT_TIMESTAMP() WHERE id = ?;`
+);

@@ -3,63 +3,159 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pixel example</title>
-    <style>
-      .hidden {
-        display: none;
-      }
-
-      .column {
-        display: flex;
-        flex-direction: column;
-        align-items: baseline;
-        gap: 4rem;
-      }
-
-      :root {
-        --border: none;
-      }
-
-      .border {
-        --border: 5px solid red;
-      }
-
-      * {
-        border: var(--border);
-      }
-    </style>
+    <title>Pixel Client</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./main.js"></script>
   </head>
-  <body>
-    <div>
-      <input type="checkbox" name="border-toggle" id="border-toggle" />
-      <script>
-        document.querySelector("input").addEventListener("change", (event) => {
-          document.body.classList.toggle("border");
-        });
-      </script>
-    </div>
+  <body id="app">
+    <header id="top-bar" class="top-bar">
+      <h1>Pixel Client</h1>
+      <pre>user@user.com</pre>
+      <pre id="current-user"></pre>
+    </header>
 
-    <main class="column">
-      <h1>Hello there</h1>
+    <main class="layout row">
+      <section class="layout" id="Users">
+        <form id="register-form" autocomplete="off">
+          <h2>Register</h2>
+          <label for="email-register">
+            Email:
+            <input
+              type="email"
+              name="email"
+              id="email-register"
+              placeholder="johndoe@email.com"
+              required
+            />
+          </label>
+          <label for="password-register">
+            Password:
+            <input
+              type="password"
+              name="password"
+              id="password-register"
+              placeholder="secret_password"
+              required
+            />
+          </label>
+          <button type="submit">Register</button>
+        </form>
 
-      <img src="/assets/plant_big.png" alt="Just a plant" width="300px" />
+        <form id="login-form" autocomplete="off">
+          <h2>Login</h2>
 
-      <img class="hidden" src="/p.png" alt="Raw Pixel" />
-      <img class="hidden" src="/p.png?id=hidden" alt="Hidden Pixel" />
-      <img src="/p.png?id=visible" alt="Pixel" />
-      <img src="/p.png?id=none" alt="Pixel none" style="display: none" />
+          <label for="email-login">
+            Email:
+            <input
+              type="email"
+              name="email"
+              id="email-login"
+              placeholder="johndoe@email.com"
+              required
+            />
+          </label>
+          <label for="password-login">
+            Password:
+            <input
+              type="password"
+              name="password"
+              id="password-login"
+              placeholder="secret_password"
+              required
+            />
+          </label>
+          <button type="submit">Login</button>
+        </form>
 
-      <img
-        src="/p.png?id=true-pixel"
-        alt=""
-        width="1"
-        height="1"
-        style="display: none"
-      />
+        <form id="logout-form" autocomplete="off">
+          <h2>Logout</h2>
 
-      <img src="/p.png?id=email-friendly" alt="" width="1" height="1" />
+          <button type="submit">Logout</button>
+        </form>
 
-      <p>Have a nice day.</p>
+        <form id="current-user-form" autocomplete="off">
+          <h2>Get current User</h2>
+
+          <button type="submit">Get current User</button>
+        </form>
+
+        <form id="change-name-form" autocomplete="off">
+          <h2>Change your name</h2>
+
+          <label for="name">
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Name"
+              required
+            />
+          </label>
+          <button type="submit">Change name</button>
+        </form>
+
+        <form id="change-email-form" autocomplete="off">
+          <h2>Change your email</h2>
+
+          <label for="email">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="notjohndoe@email.com"
+              required
+            />
+          </label>
+          <button type="submit">Change email</button>
+        </form>
+      </section>
+
+      <section class="layout" id="Pixels">
+        <form id="pixel-create-form" autocomplete="off">
+          <h2>Create Pixel</h2>
+
+          <label for="pixel-name">
+            Name:
+            <input
+              type="text"
+              name="name"
+              id="pixel-name"
+              placeholder="GitHub Profile"
+              required
+            />
+          </label>
+          <!-- <label for="pixel-type">
+            Type:
+            <input
+              type="text"
+              name="type"
+              id="pixel-type"
+              placeholder="GLOBAL"
+              pattern="GLOBAL|SCOPED"
+              required
+            />
+          </label> -->
+
+          <button type="submit">Create</button>
+        </form>
+
+        <form id="pixel-all-form" autocomplete="off">
+          <h2>Get all your Pixels</h2>
+
+          <button type="submit">Get all Pixels</button>
+        </form>
+
+        <form id="pixel-delete-form" autocomplete="off">
+          <h2>Delete your Pixel</h2>
+
+          <label for="pixel-id">
+            Pixel ID:
+            <input type="text" name="id" id="pixel-id" required />
+          </label>
+
+          <button type="submit">Delete</button>
+        </form>
+      </section>
     </main>
   </body>
 </html>
