@@ -30,7 +30,6 @@ export class PixelController {
 
     const pixel = await this.service.getPixelById(id);
 
-    console.log({ userId, pixel });
     if (pixel.user_id !== userId) {
       res.sendStatus(401);
       return;
