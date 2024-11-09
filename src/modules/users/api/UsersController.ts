@@ -36,13 +36,13 @@ export class UsersController {
       const token = await this.service.loginUser(dto.email, dto.password);
 
       // Set cookie.
-      const MIN_15 = 15 * 60 * 1_000; // Milliseconds.
+      const WEEK = 7 * 24 * 60 * 60 * 1_000; // Milliseconds.
 
       res.cookie(JWT.TOKEN_NAME, token, {
         // Todo: Figure out and to Config/Envs.
         httpOnly: true,
         sameSite: "strict",
-        maxAge: MIN_15,
+        maxAge: WEEK,
         signed: true,
         secure: config.environment === "production",
       });
