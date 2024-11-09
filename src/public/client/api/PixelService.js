@@ -11,7 +11,7 @@ export class PixelService {
     );
   }
 
-  async createPixel(name, type) {
+  async createPixel(name, type = "GLOBAL") {
     try {
       return await this.#client.post(`/`, { name, type });
     } catch (error) {

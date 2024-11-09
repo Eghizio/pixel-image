@@ -1,7 +1,14 @@
 .layout {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 #Users {

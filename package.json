@@ -3,6 +3,7 @@
   "scripts": {
     "build": "rm -fr dist && tsc",
     "start": "npm run build && node dist/index.js",
+    "dev": "npm run start:dev",
     "start:prod": "npm run build && dotenvx run -f .env.production -- node dist/index.js",
     "start:dev": "npm run build && dotenvx run -f .env.development -- node dist/index.js",
     "docker:phpmyadmin": "docker run --name=phpmyadmin-pixel -d -p 8080:80 -e PMA_ARBITRARY=1 phpmyadmin",

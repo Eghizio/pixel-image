@@ -7,16 +7,17 @@
     <link rel="stylesheet" href="./style.css" />
     <script type="module" src="./main.js"></script>
   </head>
-  <body>
-    <main id="app" class="layout">
-      <article id="top-bar" class="top-bar">
-        <h1>Pixel Client</h1>
-        <pre>user@user.com</pre>
-        <pre id="current-user"></pre>
-      </article>
+  <body id="app">
+    <header id="top-bar" class="top-bar">
+      <h1>Pixel Client</h1>
+      <pre>user@user.com</pre>
+      <pre id="current-user"></pre>
+    </header>
 
+    <main class="layout row">
       <section class="layout" id="Users">
         <form id="register-form" autocomplete="off">
+          <h2>Register</h2>
           <label for="email-register">
             Email:
             <input
@@ -41,6 +42,8 @@
         </form>
 
         <form id="login-form" autocomplete="off">
+          <h2>Login</h2>
+
           <label for="email-login">
             Email:
             <input
@@ -65,14 +68,20 @@
         </form>
 
         <form id="logout-form" autocomplete="off">
+          <h2>Logout</h2>
+
           <button type="submit">Logout</button>
         </form>
 
         <form id="current-user-form" autocomplete="off">
+          <h2>Get current User</h2>
+
           <button type="submit">Get current User</button>
         </form>
 
         <form id="change-name-form" autocomplete="off">
+          <h2>Change your name</h2>
+
           <label for="name">
             <input
               type="text"
@@ -86,6 +95,8 @@
         </form>
 
         <form id="change-email-form" autocomplete="off">
+          <h2>Change your email</h2>
+
           <label for="email">
             <input
               type="email"
@@ -101,6 +112,8 @@
 
       <section class="layout" id="Pixels">
         <form id="pixel-create-form" autocomplete="off">
+          <h2>Create Pixel</h2>
+
           <label for="pixel-name">
             Name:
             <input
@@ -111,7 +124,7 @@
               required
             />
           </label>
-          <label for="pixel-type">
+          <!-- <label for="pixel-type">
             Type:
             <input
               type="text"
@@ -121,16 +134,20 @@
               pattern="GLOBAL|SCOPED"
               required
             />
-          </label>
+          </label> -->
 
           <button type="submit">Create</button>
         </form>
 
         <form id="pixel-all-form" autocomplete="off">
+          <h2>Get all your Pixels</h2>
+
           <button type="submit">Get all Pixels</button>
         </form>
 
         <form id="pixel-delete-form" autocomplete="off">
+          <h2>Delete your Pixel</h2>
+
           <label for="pixel-id">
             Pixel ID:
             <input type="text" name="id" id="pixel-id" required />
