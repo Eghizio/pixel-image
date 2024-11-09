@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { PixelService } from "../domain/PixelService.interface";
+import type { PixelService } from "../domain/PixelService.interface.js";
 import { PixelDto } from "../models/Pixel/Pixel.dto.js";
 import { JWT } from "../../../lib/JWT.js";
 

@@ -1,6 +1,7 @@
 import express from "express";
-import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import morgan from "morgan";
+import * as rotatingFileStream from "rotating-file-stream";
 import type { Config } from "../Config.js";
 import type { ApplicationModules } from "src/modules/index.js";
 import { createApiRouter } from "./router/api.js";
@@ -13,12 +14,32 @@ export const createServer = (
 ) => {
   const app = express();
 
-  app.use(morgan(environment === "development" ? "dev" : "combined"));
+  const isDevelopment = environment === "development";
+
+  app.use(
+    morgan(isDevelopment ? "dev" : "combined", {
+      stream: isDevelopment
+        ? undefined
+        : rotatingFileStream.createStream(
+            (time) => {
+              if (!time) return `${new Date().toISOString()}.log`;
+              if (typeof time === "number") return `${time}.log`;
+              return `${time.toISOString()}.log`;
+            },
+            {
+              interval: "1d",
+              path: "logs",
+              compress: "gzip",
+              teeToStdout: true,
+            }
+          ),
+    })
+  );
   app.use(express.json());
   app.use(cookieParser(secrets.cookies));
   app.disable("x-powered-by");
 
-  if (environment === "development") app.set("json spaces", 2);
+  if (isDevelopment) app.set("json spaces", 2);
 
   app.get("/_/health", (_, res) => {
     res.json({ health: "ok", environment });
