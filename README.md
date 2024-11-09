@@ -1,7 +1,5 @@
 # Pixel image
 
-<img src="https://frog02-40476.wykr.es/p.png?id=pixel-image-git-repo" alt="" width="1" height="1" style="display: none"/>
-
 Tracking & Analytics using pixel ✨
 
 > `http://localhost:4000/p.png?id=0xabcdef`
@@ -24,3 +22,5 @@ Inspired by: [GitHub Profile Views Counter](https://github.com/antonkomarev/gith
 - Push Notification triggers
 - Web Extension, Desktop & Mobile App
 - Ignoring tracking for a user specific query ex: `?as=Eghizio`
+
+<img src="https://frog02-40476.wykr.es/p.png?id=7e2ba438-8bcd-4174-8468-4b00f13a" alt="" width="1" height="1" style="display: none" />
