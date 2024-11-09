@@ -22,7 +22,7 @@ export class DefaultPixelService implements PixelService {
   }
 
   async getPixelById(pixelId: string) {
-    const pixel = await this.repository.getPixelById(pixelId);
+    const [pixel] = await this.repository.getPixelById(pixelId);
     return pixel;
   }
 
