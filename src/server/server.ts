@@ -41,7 +41,7 @@ export const createServer = (
       origin: (origin, callback) => {
         console.log({ origin }); // Debug
 
-        if (!origin) return false;
+        if (!origin) return callback(null, false);
 
         const allowList = [
           isDevelopment
