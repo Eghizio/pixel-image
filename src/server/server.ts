@@ -39,6 +39,8 @@ export const createServer = (
   app.use(
     cors({
       origin: (origin, callback) => {
+        console.log({ origin }); // Debug
+
         if (!origin) return false;
 
         const allowList = [
