@@ -1,21 +1,37 @@
 import type { Request, Response } from "express";
 import type { UsersService } from "../domain/UsersService.interface.js";
-import { UserDto } from "../models/User/User.dto.js";
+import { UserRequestDto, UserResponseDto } from "../models/User/User.dto.js";
 import { UserAlreadyExists } from "../errors/UserAlreadyExists.js";
 import { InvalidCredentials } from "../errors/InvalidCredentials.js";
 import { config } from "../../../Config.js";
 import { JWT } from "../../../lib/JWT.js";
 
+// Cookie expiration.
+const WEEK = 7 * 24 * 60 * 60 * 1_000; // Milliseconds.
+
+const AUTH_COOKIE_OPTIONS = {
+  // Todo: Figure out and to Config/Envs.
+  httpOnly: true,
+  sameSite: "strict",
+  maxAge: WEEK,
+  signed: true,
+  secure: config.environment === "production",
+} as const;
+
 export class UsersController {
   constructor(private service: UsersService) {}
 
   async registerUser(req: Request, res: Response) {
-    const dto = new UserDto(req.body);
+    const dto = new UserRequestDto(req.body);
 
     try {
-      const id = await this.service.registerUser(dto.email, dto.password);
-      res.status(201).json({ id });
-      return; // TODO: Set cookie.
+      const user = await this.service.registerUser(dto.email, dto.password);
+
+      const token = await this.service.loginUser(dto.email, dto.password);
+
+      res.cookie(JWT.TOKEN_NAME, token, AUTH_COOKIE_OPTIONS);
+      res.status(201).json({ user: UserResponseDto.fromEntity(user) });
+      return;
     } catch (error) {
       // Todo: Move it to UsersRouter ErrorHandler ?
       if (error instanceof UserAlreadyExists) {
@@ -28,26 +44,17 @@ export class UsersController {
     }
   }
 
-  // Todo: Add last_seen_at? Should it be updated at login? Or when?
   async loginUser(req: Request, res: Response) {
-    const dto = new UserDto(req.body);
+    const dto = new UserRequestDto(req.body);
 
     try {
       const token = await this.service.loginUser(dto.email, dto.password);
 
-      // Set cookie.
-      const WEEK = 7 * 24 * 60 * 60 * 1_000; // Milliseconds.
+      const user = await this.service.findUserByEmail(dto.email);
 
-      res.cookie(JWT.TOKEN_NAME, token, {
-        // Todo: Figure out and to Config/Envs.
-        httpOnly: true,
-        sameSite: "strict",
-        maxAge: WEEK,
-        signed: true,
-        secure: config.environment === "production",
-      });
+      res.cookie(JWT.TOKEN_NAME, token, AUTH_COOKIE_OPTIONS);
 
-      res.sendStatus(200);
+      res.status(200).json({ user });
       // res.status(302);
       return;
     } catch (error) {
@@ -82,15 +89,7 @@ export class UsersController {
         "Ooopsie no user. Maybe account deleted but token remains."
       ); // Delete token?
 
-    const userDataDto = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      createdAt: user.created_at,
-      // last_seen_at,
-    };
-
-    res.status(200).json(userDataDto);
+    res.status(200).json({ user: UserResponseDto.fromEntity(user) });
     return;
   }
 

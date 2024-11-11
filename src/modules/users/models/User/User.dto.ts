@@ -1,23 +1,39 @@
-export class UserDto {
-  // readonly id: string;
-  readonly email: string;
-  readonly password: string; // Gotta protect this if outputing.
-  // readonly name: string;
+import { UserEntity } from "./User.entity.js";
 
-  constructor({
-    // id,
-    email,
-    password,
-  }: // name,
-  {
-    // readonly id: string;
-    readonly email: string;
-    readonly password: string;
-    // readonly name: string;
-  }) {
-    // this.id = id;
+export class UserRequestDto {
+  readonly email: string;
+  readonly password: string;
+
+  constructor({ email, password }: { email: string; password: string }) {
     this.email = email;
     this.password = password;
-    // this.name = name;
+  }
+}
+
+export class UserResponseDto {
+  readonly id: string;
+  readonly email: string;
+  readonly name: string;
+  readonly createdAt: Date;
+
+  constructor({
+    id,
+    email,
+    name,
+    createdAt,
+  }: {
+    id: string;
+    email: string;
+    name: string;
+    createdAt: Date;
+  }) {
+    this.id = id;
+    this.email = email;
+    this.name = name;
+    this.createdAt = createdAt;
+  }
+
+  static fromEntity({ id, email, name, created_at }: UserEntity) {
+    return new UserResponseDto({ id, email, name, createdAt: created_at });
   }
 }

@@ -1,7 +1,7 @@
 import type { UserEntity } from "../models/User/User.entity.js";
 
 export interface UsersService {
-  registerUser(email: string, password: string): Promise<string>;
+  registerUser(email: string, password: string): Promise<UserEntity>;
 
   loginUser(email: string, password: string): Promise<string>;
 

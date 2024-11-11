@@ -18,11 +18,13 @@ export class MySqlUsersRepository implements UsersRepository {
     return this.db.executeQuery(q);
   }
 
+  // Return Entity
   async getUserByEmail(email: string) {
     const q = SELECT_USER_BY_EMAIL.withValues([email]);
     return this.db.executeQuery(q);
   }
 
+  // Return Entity
   async getUserById(id: string) {
     const q = SELECT_USER_BY_ID.withValues([id]);
     return this.db.executeQuery(q);

@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import morgan from "morgan";
 import * as rotatingFileStream from "rotating-file-stream";
 import type { Config } from "../Config.js";
@@ -33,6 +34,24 @@ export const createServer = (
               teeToStdout: true,
             }
           ),
+    })
+  );
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin) return false;
+
+        const allowList = [
+          isDevelopment
+            ? "http://localhost:5173"
+            : "https://frog02-40476.wykr.es",
+          "https://pixel-image-client.vercel.app",
+        ];
+
+        return callback(null, allowList.includes(origin));
+      },
+      credentials: true,
+      optionsSuccessStatus: 200,
     })
   );
   app.use(express.json());

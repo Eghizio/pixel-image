@@ -10,7 +10,7 @@ import { JWT } from "../../../lib/JWT.js";
 export class DefaultUsersService implements UsersService {
   constructor(private repository: UsersRepository) {}
 
-  async registerUser(email: string, password: string): Promise<string> {
+  async registerUser(email: string, password: string): Promise<UserEntity> {
     const user = await this.findUserByEmail(email);
     if (user !== null) throw new UserAlreadyExists();
 
@@ -18,8 +18,11 @@ export class DefaultUsersService implements UsersService {
     const hashedPassword = await PasswordEncryption.hash(password);
 
     await this.repository.insertUser(userId, email, hashedPassword, email);
+    const registeredUser = await this.findUserById(userId);
 
-    return userId;
+    if (registeredUser === null) throw new Error("Dupa"); // todo adjust
+
+    return registeredUser; // Change to Domain model instead of Entity.
   }
 
   async loginUser(email: string, password: string): Promise<string> {
