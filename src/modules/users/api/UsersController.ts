@@ -12,7 +12,8 @@ const WEEK = 7 * 24 * 60 * 60 * 1_000; // Milliseconds.
 const AUTH_COOKIE_OPTIONS = {
   // Todo: Figure out and to Config/Envs.
   httpOnly: true,
-  sameSite: "strict",
+  // sameSite: "strict",
+  sameSite: "lax", // Todo: Research potential vulerabilities.
   maxAge: WEEK,
   signed: true,
   secure: config.environment === "production",
