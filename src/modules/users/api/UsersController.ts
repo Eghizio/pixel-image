@@ -13,7 +13,8 @@ const AUTH_COOKIE_OPTIONS = {
   // Todo: Figure out and to Config/Envs.
   httpOnly: true,
   // sameSite: "strict",
-  sameSite: "lax", // Todo: Research potential vulerabilities.
+  // sameSite: "lax", // Todo: Research potential vulerabilities.
+  sameSite: "none", // Todo: Research potential vulerabilities.
   maxAge: WEEK,
   signed: true,
   secure: config.environment === "production",
