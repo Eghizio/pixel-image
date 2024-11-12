@@ -102,7 +102,9 @@ export class UsersController {
 
     await this.service.changeUsersName(name, userId);
 
-    res.status(200).json({ name });
+    const user = await this.service.findUserById(userId);
+
+    res.status(200).json({ user });
     return;
   }
 
@@ -113,7 +115,9 @@ export class UsersController {
 
     await this.service.changeUsersEmail(email, userId);
 
-    res.status(200).json({ email });
+    const user = await this.service.findUserById(userId);
+
+    res.status(200).json({ user });
     return;
   }
 
